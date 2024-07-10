@@ -1,3 +1,4 @@
+import "./CreateUserForm.scss";
 import { FormEvent, useState } from "react";
 import { Users } from "../../DataTypes/DataTypes";
 import { useNavigate } from "react-router-dom";
