@@ -18,12 +18,23 @@ export const CreateUserForm = ({
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const getExistingEmail = async () => {
+    const response = await fetch(
+      `http://localhost:8080/checkuserexists/${user.email}`
+    );
+    const existingEmail = await response.json();
+    console.log(existingEmail)
+    setEmailInUse(existingEmail);
+  };
+
   const handleValidation = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (Object.values(user).some((value) => !value)) {
       setIncompletedDate(true);
       return;
+    } else {
+        setIncompletedDate(false);
     }
 
     if (!user.email.includes("@")) {
@@ -34,26 +45,24 @@ export const CreateUserForm = ({
       getExistingEmail();
     }
 
-    if (!emailInUse && !incompletedData && !invalidEmail) {
-      console.log("Thank you for creating a user");
-      handleSubmit(user);
-      setIncompletedDate(false);
-      setEmailInUse(false);
-      setInvalidEmail(false);
-        navigate("/")
-    }
+    checkAbleToSubmit()
   };
+
+  const checkAbleToSubmit = () => {
+    if (!emailInUse && !incompletedData && !invalidEmail) {
+        console.log("Thank you for creating a user");
+        handleSubmit(user);
+        setIncompletedDate(false);
+        setEmailInUse(false);
+        setInvalidEmail(false);
+        navigate("/")
+      }
+  }
 
   const handleInput = (event: FormEvent<HTMLInputElement>, key: string) =>
     setUser({ ...user, [key]: event.currentTarget.value });
 
-  const getExistingEmail = async () => {
-    const response = await fetch(
-      `http://localhost:8080/findUser/${user.email}`
-    );
-    const existingEmail = await response.json();
-    setEmailInUse(existingEmail);
-  };
+
 
   return (
     <div>
