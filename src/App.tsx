@@ -1,9 +1,11 @@
+import './App.scss'
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Welcome from "./assets/Containers/Welcome/Welcome";
 import CreateUser from "./assets/Containers/CreateUser/CreateUser";
 import LogInPage from "./assets/Containers/LogInPage/LogInPage";
 import { UserLogin, Users } from "./assets/DataTypes/DataTypes";
+
 
 function App() {
   const [userName, setUserName] = useState<String>('');

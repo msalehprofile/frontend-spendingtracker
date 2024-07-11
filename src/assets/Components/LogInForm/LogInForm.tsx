@@ -1,5 +1,7 @@
+import './LogInForm.scss';
 import { FormEvent, useState } from "react";
 import { Users, UserLogin } from "../../DataTypes/DataTypes";
+import Button from '../Button/Button';
 
 type LogInProps = {
   defaultLogInDetails: UserLogin;
@@ -46,26 +48,30 @@ const LogInForm = ({ defaultLogInDetails, handleSubmit, incorrectPassword }: Log
   };
 
   return (
-    <div>
-      <form onSubmit={handleValidation}>
-        <p>Email:</p>
+    <>
+      <form  className="login-form" onSubmit={handleValidation}>
+        <h1 className="login-form__heading" >Log in</h1>
+        <p className="login-form__subheading">Email:</p>
         <input
           type="text"
           placeholder="email"
           onInput={(event) => handleInput(event, "email")}
+          className="login-form__input"
         />
-        <p>Password:</p>
+        <p className="login-form__subheading">Password:</p>
         <input
           type="text"
           placeholder="password"
           onInput={(event) => handleInput(event, "password")}
+          className="login-form__input"
         />
-        <button type="submit">Log In</button>
-        {checksAllInputs && <p>Please complete all inputs</p>}
-        {!emailInUse && <p>Cannot find accound with his email address</p>}
-        {incorrectPassword && <p>Sorry, that is not the correct password.</p>}
+        {/* <button type="submit">Log In</button> */}
+        <Button label="Log in" size="small" color="primary"/>
+        {checksAllInputs && <p className="login-form__error">Please complete all inputs</p>}
+        {!emailInUse && <p className="login-form__error">Cannot find accound with his email address</p>}
+        {incorrectPassword && <p className="login-form__error">Sorry, that is not the correct password.</p>}
       </form>
-    </div>
+    </>
   );
 };
 

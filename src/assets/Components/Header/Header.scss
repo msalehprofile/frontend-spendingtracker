@@ -1,0 +1,15 @@
+@use 'src/Variables/Variables.scss' as *;
+
+.header {
+    height: 8vh;
+    width: 100%;
+    background-color: $secondary-color;
+
+    &__brand-name {
+        font-size: $header-brand-name-font-size;
+        text-align: center;
+        padding: 15px;
+        background-color: $secondary-color;
+        color: $color-white;
+    }
+}

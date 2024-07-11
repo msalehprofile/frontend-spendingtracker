@@ -1,0 +1,25 @@
+@use "src/Variables/Variables.scss" as *;
+
+.welcomePage {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.7fr 2fr 0.7fr;
+  grid-template-rows: 1fr 2fr 0.5fr 1fr;
+  flex-direction: column;
+  justify-content: space-around;
+
+  &__name {
+    font-family: $brand-name-font;
+    font-size: $homescreen-brand-name-font-size;
+    text-align: center;
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  &__buttons {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  
+}
