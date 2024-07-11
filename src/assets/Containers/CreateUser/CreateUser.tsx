@@ -1,6 +1,8 @@
-
+import './CreateUser.scss';
 import { Users } from "../../DataTypes/DataTypes";
 import CreateUserForm from "../../Components/CreateUserForm/CreateUserForm";
+import Header from "../../Components/Header/Header";
+import { Link } from "react-router-dom";
 
 const CreateUser = () => {
 
@@ -21,7 +23,10 @@ const CreateUser = () => {
   };
 
   return (
-    <div>
+    <div className="create-user">
+      <Header/>
+      <Link to="/"><p className="create-user__back">back</p></Link>
+      
       <CreateUserForm
         handleSubmit={handleSubmit}
         defaultCreateUserFormState={defaultCreateUserFormState}

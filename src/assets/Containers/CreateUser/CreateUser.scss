@@ -1,0 +1,16 @@
+@use 'src/Variables/Variables.scss'as *;
+
+.create-user{
+&__back{
+    height: 2vh;
+    width: 100vw;
+    text-align: center;
+    padding: 10px 0px;
+    background-color: $primary-color;
+    color: $color-black;
+
+    &:active {
+        background-color: darken($primary-color, 10%);
+    }
+}
+}

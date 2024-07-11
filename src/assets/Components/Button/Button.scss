@@ -1,0 +1,39 @@
+@use 'src/Variables/Variables.scss' as *;
+
+.button {
+    padding: 15px;
+    margin: 20px 0px;
+    border-radius: 30px;
+    font-size: 18px;
+
+    &--large{
+        width:100%;
+      }
+    
+      &--medium{
+        width:75%;
+      }
+    
+      &--small{
+        width: 30%;
+        padding: 10px;
+      }
+
+      &--primary {
+        background-color: $primary-color;
+        border: 1px solid $primary-color;
+
+        &:active{
+            background-color: darken($primary-color,10%)
+        }
+      }
+
+      &--secondary {
+        background-color: $secondary-color;
+        border: 1px solid $secondary-color;
+
+        &:active{
+            background-color: darken($secondary-color,10%)
+        }
+      }
+}
