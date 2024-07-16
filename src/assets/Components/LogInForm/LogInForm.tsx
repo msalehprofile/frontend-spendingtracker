@@ -5,11 +5,11 @@ import Button from '../Button/Button';
 
 type LogInProps = {
   defaultLogInDetails: UserLogin;
-  handleSubmit: (user: UserLogin) => void;
+  handleSubmitLogIn: (user: UserLogin) => void;
   incorrectPassword: boolean;
 };
 
-const LogInForm = ({ defaultLogInDetails, handleSubmit, incorrectPassword }: LogInProps) => {
+const LogInForm = ({ defaultLogInDetails, handleSubmitLogIn, incorrectPassword }: LogInProps) => {
   const [user, setUser] = useState<UserLogin>(defaultLogInDetails);
   const [emailInUse, setEmailInUse] = useState<boolean>(true);
   const [checksAllInputs, setChecksAllInputs] = useState<boolean>(false);
@@ -37,7 +37,7 @@ const LogInForm = ({ defaultLogInDetails, handleSubmit, incorrectPassword }: Log
   const handletest = (existingEmail: boolean) => {
 
     if (existingEmail && user.password) {
-        handleSubmit(user)
+      handleSubmitLogIn(user)
     } else {
         setEmailInUse(false)
     }
