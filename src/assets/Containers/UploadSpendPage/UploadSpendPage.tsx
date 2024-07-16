@@ -1,9 +1,9 @@
 import DashboardNav from '../../Components/DashboardNav/DashboardNav';
 import Header from '../../Components/Header/Header';
-import './UserPages.scss';
+import './UploadSpendPage.scss';
 
 
-const UserPages = () => {
+const UploadSpendPage = () => {
   return (
     <div>
         <Header/>
@@ -12,4 +12,4 @@ const UserPages = () => {
   )
 }
 
-export default UserPages
+export default UploadSpendPage
