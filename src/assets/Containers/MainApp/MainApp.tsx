@@ -10,7 +10,9 @@ import Trends from "../Trends/Trends";
 import UserProfile from "../UserProfile/UserProfile";
 
 const MainApp = () => {
-  const [userName, setUserName] = useState<String>("");
+  const [userFirstName, setUserFirstName] = useState<string>("Terry");
+  const [userSecondName, setUserSecondName] = useState<string>("Smith");
+  const [userEmail, setUserEmail] = useState<string>("test@test.com");
   const [userId, setUserId] = useState<number>();
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(true);
   const [foundUser, setFoundUser] = useState<Users>();
@@ -28,14 +30,23 @@ const MainApp = () => {
     setFoundUser(data);
   };
 
+  const handleSignOut = () => {
+    setUserLoggedIn(false)
+    setUserFirstName("")
+    setUserSecondName("")
+    setUserId(0)
+  }
+
   const passwordCheck = () => {
     if (foundUser && foundUser.email != undefined) {
       // console.log("getting here")
       // console.log("user name entered:" , userPasswordEntered, "found name:" ,foundUser.email)
       if (userPasswordEntered == foundUser.password) {
         console.log(userPasswordEntered, foundUser.password);
-        setUserName(foundUser.firstName);
+        setUserFirstName(foundUser.firstName);
+        setUserSecondName(foundUser.secondName);
         setUserId(foundUser.id);
+        setUserEmail(foundUser.email);
         setUserLoggedIn(true);
         setIncorrectPassword(false);
         navigate("/dashboard");
@@ -51,7 +62,6 @@ const MainApp = () => {
     }
   }, [foundUser]);
 
-  console.log("is logged in: ", userLoggedIn);
   return (
     <>
       <Routes>
@@ -70,7 +80,7 @@ const MainApp = () => {
           <>
             <Route path="/dashboard" element={<Trends />} />
             <Route path="/uploadspend" element={<UploadSpendPage />} />
-            <Route path="/myprofile" element={<UserProfile />} />
+            <Route path="/myprofile" element={<UserProfile userFirstName={userFirstName} userSecondName={userSecondName} userEmail={userEmail} handleSignOut={handleSignOut}/>} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/" />} />

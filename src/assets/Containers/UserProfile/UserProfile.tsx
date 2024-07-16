@@ -1,14 +1,40 @@
-import DashboardNav from '../../Components/DashboardNav/DashboardNav';
-import Header from '../../Components/Header/Header';
-import './UserProfile.scss';
+import Button from "../../Components/Button/Button";
+import DashboardNav from "../../Components/DashboardNav/DashboardNav";
+import Header from "../../Components/Header/Header";
+import "./UserProfile.scss";
 
-const UserProfile = () => {
+type UserProfileProps = {
+  userFirstName: string;
+  userSecondName: string;
+  userEmail: string;
+  handleSignOut: () => void;
+};
+const UserProfile = ({
+  userFirstName,
+  userSecondName,
+  userEmail,
+  handleSignOut
+}: UserProfileProps) => {
+
+
   return (
     <div>
-        <Header/>
-        <DashboardNav/>
-    </div>
-  )
-}
+      <Header />
+      <div className="userprofile-page">
+        <img
+          src="src/assets/DataTypes/profile.png"
+          className="userprofile-page__image"
+        />
 
-export default UserProfile
+        <h2 className="userprofile-page__name">
+          {userFirstName} {userSecondName}
+        </h2>
+        <h2 className="userprofile-page__email">{userEmail}</h2>
+        <Button onClick={handleSignOut} label="Sign out" color="primary" size="large" />
+      </div>
+      <DashboardNav />
+    </div>
+  );
+};
+
+export default UserProfile;
