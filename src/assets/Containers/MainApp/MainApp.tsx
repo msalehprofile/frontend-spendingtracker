@@ -1,22 +1,18 @@
 import "./MainApp.scss";
 import { useState, useEffect } from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Welcome from "../Welcome/Welcome";
-
+import UploadSpendPage from "../UploadSpendPage/UploadSpendPage";
 import CreateUser from "../CreateUser/CreateUser";
 import LogInPage from "../LogInPage/LogInPage";
 import { UserLogin, Users } from "../../DataTypes/DataTypes";
-import UserPages from "../UserPages/UserPages";
+import Trends from "../Trends/Trends";
+import UserProfile from "../UserProfile/UserProfile";
 
 const MainApp = () => {
   const [userName, setUserName] = useState<String>("");
   const [userId, setUserId] = useState<number>();
-  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(true);
   const [foundUser, setFoundUser] = useState<Users>();
   const [userPasswordEntered, setUserPasswordEntered] = useState<string>();
   const [incorrectPassword, setIncorrectPassword] = useState<boolean>(false);
@@ -42,6 +38,7 @@ const MainApp = () => {
         setUserId(foundUser.id);
         setUserLoggedIn(true);
         setIncorrectPassword(false);
+        navigate("/dashboard");
       } else {
         setIncorrectPassword(true);
       }
@@ -53,12 +50,6 @@ const MainApp = () => {
       passwordCheck();
     }
   }, [foundUser]);
-
-  useEffect(() => {
-    if (userLoggedIn) {
-      navigate("/dashboard");
-    }
-  }, [userLoggedIn, navigate]);
 
   console.log("is logged in: ", userLoggedIn);
   return (
@@ -76,9 +67,13 @@ const MainApp = () => {
           }
         />
         {userLoggedIn ? (
-          <Route path="/dashboard" element={<UserPages />} />
+          <>
+            <Route path="/dashboard" element={<Trends />} />
+            <Route path="/uploadspend" element={<UploadSpendPage />} />
+            <Route path="/myprofile" element={<UserProfile />} />
+          </>
         ) : (
-          <Route path="/dashboard" element={<Navigate to="/login" />} />
+          <Route path="/*" element={<Navigate to="/" />} />
         )}
       </Routes>
     </>
