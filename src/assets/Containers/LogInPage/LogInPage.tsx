@@ -5,11 +5,11 @@ import LogInForm from "../../Components/LogInForm/LogInForm";
 import { UserLogin } from "../../DataTypes/DataTypes";
 
 type LogInPageProps = {
-    handleSubmit:  (user: UserLogin) => void
+  handleSubmitLogIn:  (user: UserLogin) => void
     incorrectPassword: boolean;
 }
 
-const LogInPage = ({handleSubmit, incorrectPassword}: LogInPageProps) => {
+const LogInPage = ({handleSubmitLogIn, incorrectPassword}: LogInPageProps) => {
 
   const defaultLogInDetails = {
     email:"",
@@ -21,7 +21,7 @@ const LogInPage = ({handleSubmit, incorrectPassword}: LogInPageProps) => {
       <Header/>
       <Link to="/" ><p className="login-page__back">back</p></Link>
       <LogInForm
-        handleSubmit={handleSubmit}
+        handleSubmitLogIn={handleSubmitLogIn}
         defaultLogInDetails={defaultLogInDetails}
         incorrectPassword={incorrectPassword}
       />

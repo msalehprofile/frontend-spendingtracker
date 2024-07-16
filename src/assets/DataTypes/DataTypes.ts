@@ -10,3 +10,19 @@ export type UserLogin = {
     email: string;
     password: string;
 }
+
+export type SubmittedSpends = {
+    id: number;
+    userId: number;
+    amount: number;
+    vendor: string;
+    category: string;
+    date: string;
+}
+
+export type EnteredSpend = {
+    amount: number;
+    vendor: string;
+    category: string;
+    date: string;
+}
