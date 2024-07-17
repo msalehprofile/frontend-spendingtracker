@@ -1,0 +1,31 @@
+@use 'src/Variables/Variables.scss'as *;
+
+.transaction-tile {
+    margin: 10px 15px;
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+
+    &__category {
+        padding: 20px;
+        grid-column: 1;
+        grid-row: 1/5;
+    }
+
+    &__vendor {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    &__date {
+        grid-column: 2;
+        grid-row: 3;
+    }
+
+    &__amount {
+        padding: 2px;
+        grid-column: 3;
+        grid-row: 2;
+    }
+}

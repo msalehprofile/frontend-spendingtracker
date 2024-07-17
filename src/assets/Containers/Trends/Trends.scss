@@ -1,0 +1,12 @@
+@use 'src/Variables/Variables.scss' as *;
+
+.trends {
+    
+    &__date {
+        margin: 15px;
+    }
+
+    &__heading {
+        margin: 15px;
+    }
+}
