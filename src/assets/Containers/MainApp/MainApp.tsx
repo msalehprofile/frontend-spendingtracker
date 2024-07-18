@@ -11,6 +11,7 @@ import UserProfile from "../UserProfile/UserProfile";
 import SetBudgetPage from "../SetBudgetPage/SetBudgetPage";
 
 const MainApp = () => {
+  const brandName = "juniper"
   const [userFirstName, setUserFirstName] = useState<string>("Terry");
   const [userSecondName, setUserSecondName] = useState<string>("Smith");
   const [userEmail, setUserEmail] = useState<string>("test@test.com");
@@ -24,7 +25,12 @@ const MainApp = () => {
     SubmittedSpends[]
   >([]);
   const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
+  const [amountSpentInCurrentMonth, setAmountSpentInCurrentMonth] =useState<number>(0)
+  const [amountSpentLastMonthLFL, setAmountSpentLastMonthLFL] =useState<number>(0)
   const today = new Date();
+  const [variance, setVariance] = useState<number>(0);
+  const [spendEqualToLastMonth, setSpendEqualToLastMonth] = useState<boolean>(false)
+  const [spendMoreThanLastMonth, setSpendMoreThanLastMonth] = useState<boolean>(false)
   const navigate = useNavigate();
 
   const handleSubmitLogIn = async (userLogin: UserLogin) => {
@@ -36,6 +42,20 @@ const MainApp = () => {
     setFoundUser(data);
   };
 
+  const handleGetThisMonthsMoneySpent = async (userId: number) => {
+    const resp = await fetch(`http://localhost:8080/calculateCurrentMonthSpends/${userId}`)
+    const data = await resp.json();
+    setAmountSpentInCurrentMonth(data)
+  }
+
+  const handleGetLastMonthsMoneySpent = async (userId: number) => {
+    const resp = await fetch(`http://localhost:8080/calculateLastMonthSpends/${userId}`)
+    const data = await resp.json();
+    setAmountSpentLastMonthLFL(data)
+  }
+
+
+
   const handleSubmitSpend = async (spendToSubmit: SubmittedSpends) => {
     await fetch("http://localhost:8080/addspend", {
       method: "POST",
@@ -44,6 +64,8 @@ const MainApp = () => {
     });
     handleGetUserSpends(userId);
     handleGetUserCurrentMonthSpends(userId);
+    handleGetThisMonthsMoneySpent(userId);
+    handleGetLastMonthsMoneySpent(userId);
     navigate("/dashboard");
   };
 
@@ -70,6 +92,8 @@ const MainApp = () => {
         navigate("/dashboard");
         handleGetUserSpends(userId);
         handleGetUserCurrentMonthSpends(userId);
+        handleGetThisMonthsMoneySpent(userId)
+        handleGetLastMonthsMoneySpent(userId);
       } else {
         setIncorrectPassword(true);
       }
@@ -116,10 +140,31 @@ const MainApp = () => {
     }
   }, [foundUser]);
 
+  useEffect(() => {
+    setVariance(Number(((amountSpentInCurrentMonth / amountSpentLastMonthLFL-1)*100).toFixed(1)))
+
+  }, [amountSpentInCurrentMonth, amountSpentLastMonthLFL]);
+
+  console.log(variance)
+  useEffect(() => {
+    if (variance < 1 && variance > -1) {
+      setSpendEqualToLastMonth(true)
+    }
+
+    if( variance > 1) {
+      setSpendMoreThanLastMonth(true)
+      setSpendEqualToLastMonth(false)
+    } else {
+      setSpendMoreThanLastMonth(false)
+      setSpendEqualToLastMonth(false)
+    }
+  }, [variance]);
+
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Welcome brandName={brandName}/>} />
         <Route path="/createuser" element={<CreateUser />} />
         <Route
           path="/login"
@@ -140,6 +185,11 @@ const MainApp = () => {
                   usersCurrentMonthSpends={usersCurrentMonthSpends}
                   today={today}
                   usersAllTimeSpends={usersAllTimeSpends}
+                  brandName={brandName}
+                  amountSpentInCurrentMonth={amountSpentInCurrentMonth}
+                  variance={variance}
+                  spendEqualToLastMonth={spendEqualToLastMonth}
+                  spendMoreThanLastMonth={spendMoreThanLastMonth}
                 />
               }
             />
@@ -150,6 +200,7 @@ const MainApp = () => {
                   defaultSpend={defaultSpend}
                   userId={userId}
                   handleSubmitSpend={handleSubmitSpend}
+                  brandName={brandName}
                 />
               }
             />
@@ -161,10 +212,11 @@ const MainApp = () => {
                   userSecondName={userSecondName}
                   userEmail={userEmail}
                   handleSignOut={handleSignOut}
+                  brandName={brandName}
                 />
               }
             />
-            <Route path="/budgets" element={<SetBudgetPage />} />
+            <Route path="/budgets" element={<SetBudgetPage brandName={brandName}/>} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/" />} />

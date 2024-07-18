@@ -8,18 +8,20 @@ type UserProfileProps = {
   userSecondName: string;
   userEmail: string;
   handleSignOut: () => void;
+  brandName: string;
 };
 const UserProfile = ({
   userFirstName,
   userSecondName,
   userEmail,
-  handleSignOut
+  handleSignOut,
+  brandName
 }: UserProfileProps) => {
 
 
   return (
     <div>
-      <Header />
+      <Header brandName={brandName}/>
       <div className="userprofile-page">
         <img
           src="src/assets/DataTypes/profile.png"

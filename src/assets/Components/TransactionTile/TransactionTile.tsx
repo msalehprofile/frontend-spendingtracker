@@ -2,7 +2,7 @@ import "./TransactionTile.scss";
 
 type TransactionTileProps = {
   vendor: string;
-  amount: number;
+  amount: string;
   category: string;
   date: string;
 };

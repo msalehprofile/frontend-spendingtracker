@@ -9,9 +9,10 @@ type UploadSpendPageProps = {
   defaultSpend: EnteredSpend;
   userId: number;
   handleSubmitSpend: (handleSubmitSpend: SubmittedSpends) => void;
+  brandName: string
 };
 
-const UploadSpendPage = ({ defaultSpend, userId, handleSubmitSpend }: UploadSpendPageProps) => {
+const UploadSpendPage = ({ defaultSpend, userId, handleSubmitSpend, brandName }: UploadSpendPageProps) => {
   const [enteredSpend, setEnteredSpend] = useState<EnteredSpend>(defaultSpend);
   const [spendToSubmit, setSpendToSubmit] = useState<SubmittedSpends>();
   const [incompletedData, setIncompletedData] = useState<boolean>(false);
@@ -48,7 +49,7 @@ const UploadSpendPage = ({ defaultSpend, userId, handleSubmitSpend }: UploadSpen
 
   return (
     <div>
-      <Header />
+      <Header brandName={brandName}/>
       <UploadSpendForm
         handleInput={handleInput}
         incompletedData={incompletedData}

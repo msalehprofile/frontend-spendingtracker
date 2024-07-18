@@ -4,11 +4,15 @@ import Header from "../../Components/Header/Header";
 import "./SetBudgetPage.scss";
 import { UserBudget } from "../../DataTypes/DataTypes";
 
-const SetBudgetPage = () => {
+type SetBudgetPageProps = {
+  brandName: string;
+} 
+
+const SetBudgetPage = ({brandName}: SetBudgetPageProps) => {
     const [userBudget, setUserBudget] = useState<UserBudget>();
   return (
     <div>
-      <Header />
+      <Header brandName={brandName}/>
       <DashboardNav />
     </div>
   );

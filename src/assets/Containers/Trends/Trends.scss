@@ -9,4 +9,15 @@
     &__heading {
         margin: 15px;
     }
+
+    &__spends{
+        margin: 15px 15px 5px;
+        font-weight: lighter;
+    }
+
+    &__comparison {
+        margin: 5px 15px 5px;
+        font-size: smaller;
+        font-weight: lighter;
+    }
 }
