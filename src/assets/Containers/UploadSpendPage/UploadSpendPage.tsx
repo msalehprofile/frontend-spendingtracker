@@ -37,7 +37,6 @@ const UploadSpendPage = ({ defaultSpend, userId, handleSubmitSpend, brandName }:
     
     else {
       setIncompletedData(false);
-      console.log(spendToSubmit);
       setSpendToSubmit(finalSpend);
       handleSubmitSpend(finalSpend)
     }

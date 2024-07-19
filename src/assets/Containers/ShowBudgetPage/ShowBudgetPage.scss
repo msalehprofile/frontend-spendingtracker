@@ -1,0 +1,15 @@
+@use 'src/Variables/Variables.scss'as *;
+
+.budget-page {
+    margin: 15px 15px 70px;
+    &__heading {
+        margin: 25px 0;
+        font-size: $title-font-size;
+    }
+
+    &__subheading {
+        margin: 20px 0 10px;
+        font-weight: bolder;
+    }
+
+}

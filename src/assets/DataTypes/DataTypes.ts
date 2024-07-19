@@ -29,9 +29,13 @@ export type EnteredSpend = {
 
 export type UserBudget = {
     id: number;
+    userId: number;
     monthlyIncome: number;
-    billsbudget: number;
-    "rent/mortgage": number;
-    vendor: string;
-    category: string;
+    bills: number;
+    eatingOut: number;
+    entertainment: number;
+    gifts: number;
+    shopping: number;
+    groceries: number;
+    health: number;
 }
