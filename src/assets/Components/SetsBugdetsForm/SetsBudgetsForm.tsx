@@ -5,23 +5,26 @@ import { UserBudget } from "../../DataTypes/DataTypes";
 
 type SetsBudgetsFormProps = {
     defaultBudgets: UserBudget;
+    handleSubmitFirstBudget: (userBudgetsToSet: UserBudget) => void;
 }
-const SetsBudgetsForm = ({defaultBudgets}: SetsBudgetsFormProps ) => {
+const SetsBudgetsForm = ({defaultBudgets, handleSubmitFirstBudget}: SetsBudgetsFormProps ) => {
     const [userBudgetsToSet, setUserBudgetsToSet] = useState<UserBudget>(defaultBudgets)
+
+  const handleInput= (event: FormEvent<HTMLInputElement>, key: string) => {
+    setUserBudgetsToSet({...userBudgetsToSet, [key]: event.currentTarget.value})
+  }
 
   const handleValidation = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (userBudgetsToSet.monthlyIncome == 0) {
         console.log("need income")
+    } else {
+        handleSubmitFirstBudget(userBudgetsToSet)
     }
   };
+  
 
-  const handleInput= (event: FormEvent<HTMLInputElement>, key: string) => {
-    setUserBudgetsToSet({...userBudgetsToSet, [key]: event.currentTarget.value})
-  }
-
-  console.log(userBudgetsToSet)
   return (
     <div>
       <form className="sets-budgets-form" onSubmit={handleValidation}>

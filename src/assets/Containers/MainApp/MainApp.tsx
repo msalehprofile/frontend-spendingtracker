@@ -5,7 +5,7 @@ import Welcome from "../Welcome/Welcome";
 import UploadSpendPage from "../UploadSpendPage/UploadSpendPage";
 import CreateUser from "../CreateUser/CreateUser";
 import LogInPage from "../LogInPage/LogInPage";
-import { UserLogin, Users, SubmittedSpends } from "../../DataTypes/DataTypes";
+import { UserLogin, Users, SubmittedSpends, UserBudget } from "../../DataTypes/DataTypes";
 import Trends from "../Trends/Trends";
 import UserProfile from "../UserProfile/UserProfile";
 import ShowBudgetPage from "../ShowBudgetPage/ShowBudgetPage";
@@ -46,6 +46,7 @@ const MainApp = () => {
   const [userShoppingSpent, setUserShoppingSpent] = useState<string>("");
   const [userGroceriesSpent, setUserGroceriesSpent] = useState<string>("");
   const [userHealthSpent, setUserHealthSpent] = useState<string>("");
+  const [userBudget, setUserBudget] = useState<UserBudget | undefined>();
 
   const handleSubmitLogIn = async (userLogin: UserLogin) => {
     setUserPasswordEntered(userLogin.password);
@@ -82,6 +83,7 @@ const MainApp = () => {
     handleGetUserCurrentMonthSpends(userId);
     handleGetThisMonthsMoneySpent(userId);
     handleGetLastMonthsMoneySpent(userId);
+    handleGetUserBugdets(userId)
     setSpendsByCat();
     navigate("/dashboard");
   };
@@ -107,6 +109,7 @@ const MainApp = () => {
         setIncorrectPassword(false);
         navigate("/dashboard");
         handleGetUserSpends(userId);
+        handleGetUserBugdets(userId)
         handleGetUserCurrentMonthSpends(userId);
         handleGetThisMonthsMoneySpent(userId);
         handleGetLastMonthsMoneySpent(userId);
@@ -129,6 +132,14 @@ const MainApp = () => {
     );
     const data = await resp.json();
     setListOfUsersAllTimeSpends(data);
+  };
+
+  const handleGetUserBugdets = async (userId: number) => {
+    const resp = await fetch(
+      `http://localhost:8080/findBudgetsByUserId/${userId}`
+    );
+    const data = await resp.json();
+    setUserBudget(data);
   };
 
   const handleGetUserCurrentMonthSpends = async (userId: number) => {
@@ -245,7 +256,7 @@ const MainApp = () => {
     <>
       <Routes>
         <Route path="/" element={<Welcome brandName={brandName} />} />
-        <Route path="/createuser" element={<CreateUser />} />
+        <Route path="/createuser" element={<CreateUser brandName={brandName}/>} />
         <Route
           path="/login"
           element={
@@ -310,6 +321,7 @@ const MainApp = () => {
                   userEatingOutSpent={userEatingOutSpent}
                   userEntertainmentSpent={userEntertainmentSpent}
                   today={today}
+                  userBudget={userBudget}
                 />
               }
             />

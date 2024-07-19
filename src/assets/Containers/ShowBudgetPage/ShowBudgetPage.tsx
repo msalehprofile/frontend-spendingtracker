@@ -17,6 +17,7 @@ type ShowSpentPageProps = {
   userEatingOutSpent: string;
   userEntertainmentSpent: string;
   today: Date;
+  userBudget: UserBudget;
 };
 
 const ShowSpentPage = ({
@@ -30,33 +31,50 @@ const ShowSpentPage = ({
   userEntertainmentSpent,
   userEatingOutSpent,
   today,
+  userBudget
 }: ShowSpentPageProps) => {
-  const [userBudget, setUserBudget] = useState<UserBudget>();
-  const [noBudget, setNoBudget] = useState<boolean>(true)
-  const lastDayOfMonth =  new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  const [noBudget, setNoBudget] = useState<boolean>(true);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
   const currentMixOfMonth = today.getDate() / lastDayOfMonth.getDate();
-  const [targetMixOfMonthsBudget, setTargetMixOfMonthsBudget] = useState<number>(0)
-  const [moneySpentVsTargetSpend, setMoneySpentVsTargetSpend] = useState<number>(0)
-  
+  const [moneySpentVsTargetSpend, setMoneySpentVsTargetSpend] =
+    useState<number>(0);
+  const [overBudget, setOverBudget] = useState<boolean>(false);
+  const [underBudget, setUnderBudget] = useState<boolean>(false);
+  const [onBudget, setOnBudget] = useState<boolean>(false);
 
   const calculateSpendPerformance = () => {
-    console.log(lastDayOfMonth)
-    console.log(currentMixOfMonth)
-    let mix = 2000 * currentMixOfMonth
-    setTargetMixOfMonthsBudget(mix)
-    console.log(targetMixOfMonthsBudget)
-    setMoneySpentVsTargetSpend(targetMixOfMonthsBudget - amountSpentInCurrentMonth)
-    // if(userBudget == undefined ) {
-    //   setNoBudget(true)
-    // } else {
-    //   setNoBudget(false)
-    //   targetMixOfMonthsBudget = 1000 / today.getDate()
-    //   moneySpentVsTargetSpend = targetMixOfMonthsBudget - amountSpentInCurrentMonth 
-    // }
-  }
+    let mix = 4000 * currentMixOfMonth;
+    let targetVsSpent = mix - amountSpentInCurrentMonth;
+    setMoneySpentVsTargetSpend(targetVsSpent);
+    if (userBudget == undefined) {
+      setNoBudget(true);
+    } else {
+      let mix = 4000 * currentMixOfMonth;
+      let targetVsSpent = (mix - amountSpentInCurrentMonth).toFixed(2);
+      setMoneySpentVsTargetSpend(Number(targetVsSpent));
+      setNoBudget(false);
+    }
+    confirmVarToBudget();
+  };
 
-  console.log("target", targetMixOfMonthsBudget)
-  console.log("left", moneySpentVsTargetSpend)
+  const confirmVarToBudget = () => {
+    if (moneySpentVsTargetSpend < -50) {
+      setOverBudget(true);
+      setUnderBudget(false);
+      setOnBudget(false);
+    } else if (moneySpentVsTargetSpend > 50) {
+      setOverBudget(false);
+      setUnderBudget(true);
+      setOnBudget(false);
+    } else {
+      setOverBudget(false);
+      setUnderBudget(false);
+      setOnBudget(true);
+    }
+  };
+
+  console.log("left", moneySpentVsTargetSpend);
 
   useEffect(() => {
     calculateSpendPerformance();
@@ -66,48 +84,60 @@ const ShowSpentPage = ({
     <div>
       <Header brandName={brandName} />
       <div className="budget-page">
-      <h2 className="budget-page__heading">Monthly Spents </h2>
-      <p className="budget-page__income">£{userBudget?.monthlyIncome} income for the month</p>
-      <p className="budget-page__comment">See how you are tracking compared to your budget:</p>
-      <p className="budget-page__subheading">Total:</p>
-      <p className="budget-page__spent">
-        £{amountSpentInCurrentMonth} out of £{userBudget?.monthlyIncome} spent
-      </p>
-      {noBudget && <p className="budget-page__spent">
-        £{amountSpentInCurrentMonth} out of £{userBudget?.monthlyIncome} spent
-      </p>}
-      
-      <p className="budget-page__subheading">Bills:</p>
-      <p className="budget-page__spent">
-        £{userBillsSpent} out of £{userBudget?.bills} spent
-      </p>
-      <p className="budget-page__subheading">Eating Out:</p>
-      <p className="budget-page__spent">
-        £{userEatingOutSpent} out of £{userBudget?.eatingOut} spent
-      </p>
-      <p className="budget-page__subheading">Entertainment:</p>
-      <p className="budget-page__spent">
-        £{userEntertainmentSpent} out of £{userBudget?.entertainment} spent
-      </p>
-      <p className="budget-page__subheading">Gifts:</p>
-      <p className="budget-page__spent">
-        £{userGiftsSpent} out of £{userBudget?.gifts} spent
-      </p>
-      <p className="budget-page__subheading">Shopping:</p>
-      <p className="budget-page__spent">
-        £{userShoppingSpent} out of £{userBudget?.shopping} spent
-      </p>
-      <p className="budget-page__subheading">Groceries:</p>
-      <p className="budget-page__spent">
-        £{userGroceriesSpent} out of £{userBudget?.groceries} spent
-      </p>
-      <p className="budget-page__subheading">Health:</p>
-      <p className="budget-page__spent">
-        £{userHealthSpent} out of £{userBudget?.health} spent
-      </p>
-      <Link to="/setsbudgets">
-        <Button label="Update budgets" color="primary" size="medium" />
-      </Link>
+        <h2 className="budget-page__heading">Monthly Spents </h2>
+        <p className="budget-page__income">
+          £{userBudget?.monthlyIncome} income for the month
+        </p>
+        <p className="budget-page__comment">
+          See how you are tracking compared to your budget:
+        </p>
+        <p className="budget-page__subheading">Total:</p>
+        <p className="budget-page__spent">
+          £{amountSpentInCurrentMonth} out of £{userBudget?.monthlyIncome} spent
+        </p>
+        {noBudget && (
+          <p className="budget-page__spent">You haven't set a budget yet</p>
+        )}
+        {overBudget && !noBudget && (
+          <p className="budget-page__spent">You are currently {moneySpentVsTargetSpend} over budget.</p>
+        )}
+         {underBudget && !noBudget && (
+          <p className="budget-page__spent">You are currently {moneySpentVsTargetSpend} under budget.</p>
+        )}
+        {onBudget && !noBudget &&(
+          <p className="budget-page__spent">You are currently spending how much you planned.</p>
+        )}
+        <p className="budget-page__subheading">Bills:</p>
+        <p className="budget-page__spent">
+          £{userBillsSpent} out of £{userBudget?.bills} spent
+        </p>
+        <p className="budget-page__subheading">Eating Out:</p>
+        <p className="budget-page__spent">
+          £{userEatingOutSpent} out of £{userBudget?.eatingOut} spent
+        </p>
+        <p className="budget-page__subheading">Entertainment:</p>
+        <p className="budget-page__spent">
+          £{userEntertainmentSpent} out of £{userBudget?.entertainment} spent
+        </p>
+        <p className="budget-page__subheading">Gifts:</p>
+        <p className="budget-page__spent">
+          £{userGiftsSpent} out of £{userBudget?.gifts} spent
+        </p>
+        <p className="budget-page__subheading">Shopping:</p>
+        <p className="budget-page__spent">
+          £{userShoppingSpent} out of £{userBudget?.shopping} spent
+        </p>
+        <p className="budget-page__subheading">Groceries:</p>
+        <p className="budget-page__spent">
+          £{userGroceriesSpent} out of £{userBudget?.groceries} spent
+        </p>
+        <p className="budget-page__subheading">Health:</p>
+        <p className="budget-page__spent">
+          £{userHealthSpent} out of £{userBudget?.health} spent
+        </p>
+        <Link to="/setsbudgets">
+          <Button label="Update budgets" color="primary" size="medium" />
+        </Link>
       </div>
       <DashboardNav />
     </div>
