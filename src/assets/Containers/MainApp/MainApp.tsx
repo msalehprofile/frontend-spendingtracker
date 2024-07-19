@@ -11,14 +11,26 @@ import UserProfile from "../UserProfile/UserProfile";
 import SetBudgetPage from "../SetBudgetPage/SetBudgetPage";
 
 const MainApp = () => {
+  const brandName = "juniper"
   const [userFirstName, setUserFirstName] = useState<string>("Terry");
   const [userSecondName, setUserSecondName] = useState<string>("Smith");
   const [userEmail, setUserEmail] = useState<string>("test@test.com");
-  const [userId, setUserId] = useState<number>(0);
+  const [userId, setUserId] = useState<number>(252);
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(true);
   const [foundUser, setFoundUser] = useState<Users>();
   const [userPasswordEntered, setUserPasswordEntered] = useState<string>();
   const [incorrectPassword, setIncorrectPassword] = useState<boolean>(false);
+  const [usersAllTimeSpends, setUsersAllTimeSpends] = useState<SubmittedSpends[]>([]);
+  const [usersCurrentMonthSpends, setUsersCurrentMonthSpends] = useState<
+    SubmittedSpends[]
+  >([]);
+  const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
+  const [amountSpentInCurrentMonth, setAmountSpentInCurrentMonth] =useState<number>(0)
+  const [amountSpentLastMonthLFL, setAmountSpentLastMonthLFL] =useState<number>(0)
+  const today = new Date();
+  const [variance, setVariance] = useState<number>(0);
+  const [spendEqualToLastMonth, setSpendEqualToLastMonth] = useState<boolean>(false)
+  const [spendMoreThanLastMonth, setSpendMoreThanLastMonth] = useState<boolean>(false)
   const navigate = useNavigate();
 
   const handleSubmitLogIn = async (userLogin: UserLogin) => {
@@ -30,12 +42,31 @@ const MainApp = () => {
     setFoundUser(data);
   };
 
+  const handleGetThisMonthsMoneySpent = async (userId: number) => {
+    const resp = await fetch(`http://localhost:8080/calculateCurrentMonthSpends/${userId}`)
+    const data = await resp.json();
+    setAmountSpentInCurrentMonth(data)
+  }
+
+  const handleGetLastMonthsMoneySpent = async (userId: number) => {
+    const resp = await fetch(`http://localhost:8080/calculateLastMonthSpends/${userId}`)
+    const data = await resp.json();
+    setAmountSpentLastMonthLFL(data)
+  }
+
+
+
   const handleSubmitSpend = async (spendToSubmit: SubmittedSpends) => {
     await fetch("http://localhost:8080/addspend", {
       method: "POST",
       headers: { admin: "true", "Content-Type": "application/json" },
       body: JSON.stringify(spendToSubmit),
     });
+    handleGetUserSpends(userId);
+    handleGetUserCurrentMonthSpends(userId);
+    handleGetThisMonthsMoneySpent(userId);
+    handleGetLastMonthsMoneySpent(userId);
+    navigate("/dashboard");
   };
 
   const handleSignOut = () => {
@@ -43,12 +74,13 @@ const MainApp = () => {
     setUserFirstName("");
     setUserSecondName("");
     setUserId(0);
+    setIncorrectPassword(false);
+    setUsersAllTimeSpends([]);
+    setUserPasswordEntered("");
   };
 
   const passwordCheck = () => {
     if (foundUser && foundUser.email != undefined) {
-      // console.log("getting here")
-      // console.log("user name entered:" , userPasswordEntered, "found name:" ,foundUser.email)
       if (userPasswordEntered == foundUser.password) {
         console.log(userPasswordEntered, foundUser.password);
         setUserFirstName(foundUser.firstName);
@@ -58,6 +90,10 @@ const MainApp = () => {
         setUserLoggedIn(true);
         setIncorrectPassword(false);
         navigate("/dashboard");
+        handleGetUserSpends(userId);
+        handleGetUserCurrentMonthSpends(userId);
+        handleGetThisMonthsMoneySpent(userId)
+        handleGetLastMonthsMoneySpent(userId);
       } else {
         setIncorrectPassword(true);
       }
@@ -71,16 +107,64 @@ const MainApp = () => {
     date: "",
   };
 
+  const handleGetUserSpends = async (userId: number) => {
+    const resp = await fetch(
+      `http://localhost:8080/findSpendsByUserId/${userId}`
+    );
+    const data = await resp.json();
+    setUsersAllTimeSpends(data);
+  };
+
+  const handleGetUserCurrentMonthSpends = async (userId: number) => {
+    const resp = await fetch(
+      `http://localhost:8080/findSpendsForCurrentMonth/${userId}`
+    );
+    const data = await resp.json();
+    setUsersCurrentMonthSpends(data);
+  };
+
+  useEffect(() => {
+    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const days: number[] = [];
+
+    for (let i = 0; i < lastDay.getDate(); i++) {
+      days.push(i + 1);
+    }
+
+    setDaysInMonth(days);
+  }, []);
+
   useEffect(() => {
     if (foundUser && userPasswordEntered) {
       passwordCheck();
     }
   }, [foundUser]);
 
+  useEffect(() => {
+    setVariance(Number(((amountSpentInCurrentMonth / amountSpentLastMonthLFL-1)*100).toFixed(1)))
+
+  }, [amountSpentInCurrentMonth, amountSpentLastMonthLFL]);
+
+  console.log(variance)
+  useEffect(() => {
+    if (variance < 1 && variance > -1) {
+      setSpendEqualToLastMonth(true)
+    }
+
+    if( variance > 1) {
+      setSpendMoreThanLastMonth(true)
+      setSpendEqualToLastMonth(false)
+    } else {
+      setSpendMoreThanLastMonth(false)
+      setSpendEqualToLastMonth(false)
+    }
+  }, [variance]);
+
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Welcome brandName={brandName}/>} />
         <Route path="/createuser" element={<CreateUser />} />
         <Route
           path="/login"
@@ -93,7 +177,22 @@ const MainApp = () => {
         />
         {userLoggedIn ? (
           <>
-            <Route path="/dashboard" element={<Trends />} />
+            <Route
+              path="/dashboard"
+              element={
+                <Trends
+                  daysInMonth={daysInMonth}
+                  usersCurrentMonthSpends={usersCurrentMonthSpends}
+                  today={today}
+                  usersAllTimeSpends={usersAllTimeSpends}
+                  brandName={brandName}
+                  amountSpentInCurrentMonth={amountSpentInCurrentMonth}
+                  variance={variance}
+                  spendEqualToLastMonth={spendEqualToLastMonth}
+                  spendMoreThanLastMonth={spendMoreThanLastMonth}
+                />
+              }
+            />
             <Route
               path="/uploadspend"
               element={
@@ -101,6 +200,7 @@ const MainApp = () => {
                   defaultSpend={defaultSpend}
                   userId={userId}
                   handleSubmitSpend={handleSubmitSpend}
+                  brandName={brandName}
                 />
               }
             />
@@ -112,10 +212,11 @@ const MainApp = () => {
                   userSecondName={userSecondName}
                   userEmail={userEmail}
                   handleSignOut={handleSignOut}
+                  brandName={brandName}
                 />
               }
             />
-            <Route path="/budgets" element={<SetBudgetPage />} />
+            <Route path="/budgets" element={<SetBudgetPage brandName={brandName}/>} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/" />} />

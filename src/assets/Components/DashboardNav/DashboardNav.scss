@@ -6,10 +6,10 @@
   height: 8vh;
   justify-content: space-around;
   align-items: center;
-  position: absolute;
-  top: auto;
+  position: fixed;
   bottom: 0;
   background-color: $primary-color;
+  margin-top: 20px;
 
   &__symbol {
     font-size: $dashboard-symbol-size;

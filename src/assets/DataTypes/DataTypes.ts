@@ -26,3 +26,12 @@ export type EnteredSpend = {
     category: string;
     date: string;
 }
+
+export type UserBudget = {
+    id: number;
+    monthlyIncome: number;
+    billsbudget: number;
+    "rent/mortgage": number;
+    vendor: string;
+    category: string;
+}
