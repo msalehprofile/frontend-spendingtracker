@@ -335,7 +335,7 @@ const MainApp = () => {
             <Route
               path="/setsbudgets"
               element={
-                <SetsBudgetsPage brandName={brandName} userId={userId} />
+                <SetsBudgetsPage brandName={brandName} userId={userId} userBudget={userBudget} handleGetUserBugdets={handleGetUserBugdets}/>
               }
             />
           </>
