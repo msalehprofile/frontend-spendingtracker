@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+
 import "./SetsBudgetsPage.scss";
 import DashboardNav from "../../Components/DashboardNav/DashboardNav";
 import Header from "../../Components/Header/Header";
@@ -11,9 +11,11 @@ type SetsBudgetsPageProps = {
   userId: number;
   userBudget: UserBudget | undefined;
   handleGetUserBugdets: (userId: number) => void;
+  calculateSpendPerformance: () =>void;
+  confirmVarToBudget: () =>void;
 };
 
-const SetsBudgetsPage = ({ brandName, userId, userBudget, handleGetUserBugdets }: SetsBudgetsPageProps) => {
+const SetsBudgetsPage = ({ brandName, userId, userBudget, handleGetUserBugdets, calculateSpendPerformance, confirmVarToBudget }: SetsBudgetsPageProps) => {
   const navigate = useNavigate();
 
   let defaultBudgets = {
@@ -47,13 +49,14 @@ const SetsBudgetsPage = ({ brandName, userId, userBudget, handleGetUserBugdets }
   };
 
   const handleSubmitBudget = async (userBudgetsToSet: UserBudget) => {
-    console.log(userBudgetsToSet)
     await fetch("http://localhost:8080/createbudget", {
       method: "POST",
       headers: { admin: "true", "Content-Type": "application/json" },
       body: JSON.stringify(userBudgetsToSet),
     });
     handleGetUserBugdets(userId)
+    calculateSpendPerformance()
+    confirmVarToBudget()
     navigate("/budgets")
   };
 

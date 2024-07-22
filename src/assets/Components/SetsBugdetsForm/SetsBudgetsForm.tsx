@@ -10,7 +10,7 @@ type SetsBudgetsFormProps = {
 }
 const SetsBudgetsForm = ({defaultBudgets, handleSubmitBudget, userBudget}: SetsBudgetsFormProps ) => {
     const [userBudgetsToSet, setUserBudgetsToSet] = useState<UserBudget>(defaultBudgets)
-
+    const [hasMonthlyIncomeValue, setHasMonthlyIncomeValue] = useState<boolean>()
   const handleInput= (event: FormEvent<HTMLInputElement>, key: string) => {
     setUserBudgetsToSet({...userBudgetsToSet, [key]: event.currentTarget.value})
   }
@@ -19,9 +19,10 @@ const SetsBudgetsForm = ({defaultBudgets, handleSubmitBudget, userBudget}: SetsB
     event.preventDefault();
 
     if (userBudgetsToSet.monthlyIncome == 0) {
-        console.log("need income")
+      setHasMonthlyIncomeValue(false)
     } else {
         handleSubmitBudget(userBudgetsToSet)
+        setHasMonthlyIncomeValue(true)
     }
   };
   
@@ -94,7 +95,9 @@ const SetsBudgetsForm = ({defaultBudgets, handleSubmitBudget, userBudget}: SetsB
           onInput={(event) => handleInput(event, "shopping")}
         />
         <Button label="Submit" color="primary" size="small" />
+        {!hasMonthlyIncomeValue && <p className="sets-budgets-form__error">Please input your monthly Income</p>}
       </form>
+      
     </div>
   );
 };

@@ -3,7 +3,7 @@ import Header from "../../Components/Header/Header";
 import DashboardNav from "../../Components/DashboardNav/DashboardNav";
 import UploadSpendForm from "../../Components/UploadSpendForm/UploadSpendForm";
 import { EnteredSpend, SubmittedSpends } from "../../DataTypes/DataTypes";
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent } from "react";
 
 type UploadSpendPageProps = {
   defaultSpend: EnteredSpend;
@@ -14,7 +14,6 @@ type UploadSpendPageProps = {
 
 const UploadSpendPage = ({ defaultSpend, userId, handleSubmitSpend, brandName }: UploadSpendPageProps) => {
   const [enteredSpend, setEnteredSpend] = useState<EnteredSpend>(defaultSpend);
-  const [spendToSubmit, setSpendToSubmit] = useState<SubmittedSpends>();
   const [incompletedData, setIncompletedData] = useState<boolean>(false);
 
   const finalSpend = {
@@ -30,28 +29,29 @@ const UploadSpendPage = ({ defaultSpend, userId, handleSubmitSpend, brandName }:
     setEnteredSpend({ ...enteredSpend, [key]: event.currentTarget.value });
   };
 
+  const handleSelect = (event: FormEvent<HTMLSelectElement>, key: string) => {
+    setEnteredSpend({ ...enteredSpend, [key]: event.currentTarget.value });
+  };
+
   const handleCollateData = () => {
     if (Object.values(enteredSpend).some((value) => !value)) {
       setIncompletedData(true);
-    } 
-    
-    else {
+    } else if(enteredSpend.category == "select") {
+      setIncompletedData(true);
+    } else {
       setIncompletedData(false);
-      setSpendToSubmit(finalSpend);
       handleSubmitSpend(finalSpend)
     }
   };
   
-  useEffect(() => {
-    handleCollateData();
-  }, [enteredSpend]);
-
   return (
     <div>
       <Header brandName={brandName}/>
       <UploadSpendForm
         handleInput={handleInput}
         incompletedData={incompletedData}
+        handleSelect={handleSelect}
+        handleCollateData={handleCollateData}
       />
       <DashboardNav />
     </div>

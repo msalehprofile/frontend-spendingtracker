@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import DashboardNav from "../../Components/DashboardNav/DashboardNav";
 import Header from "../../Components/Header/Header";
 import "./ShowBudgetPage.scss";
@@ -17,8 +17,12 @@ type ShowSpentPageProps = {
   userEatingOutSpent: string;
   userEntertainmentSpent: string;
   userTransportSpent: string;
-  today: Date;
   userBudget: UserBudget | undefined;
+  onBudget: boolean;
+  overBudget: boolean;
+  noBudget: boolean;
+  underBudget: boolean;
+  moneySpentVsTargetSpend: string;
 };
 
 const ShowSpentPage = ({
@@ -31,51 +35,50 @@ const ShowSpentPage = ({
   userBillsSpent,
   userEntertainmentSpent,
   userEatingOutSpent,
-  today,
   userBudget,
-  userTransportSpent
+  userTransportSpent,
+  onBudget, overBudget, noBudget, underBudget, moneySpentVsTargetSpend
 }: ShowSpentPageProps) => {
+  // const [noBudget, setNoBudget] = useState<boolean>(true);
+  // const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  // const currentMixOfMonth = today.getDate() / lastDayOfMonth.getDate();
+  // const [moneySpentVsTargetSpend, setMoneySpentVsTargetSpend] =
+  //   useState<string>("");
+  // const [overBudget, setOverBudget] = useState<boolean>(false);
+  // const [underBudget, setUnderBudget] = useState<boolean>(false);
+  // const [onBudget, setOnBudget] = useState<boolean>(false);
 
-  const [noBudget, setNoBudget] = useState<boolean>(true);
-  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-  const currentMixOfMonth = today.getDate() / lastDayOfMonth.getDate();
-  const [moneySpentVsTargetSpend, setMoneySpentVsTargetSpend] =
-    useState<string>("");
-  const [overBudget, setOverBudget] = useState<boolean>(false);
-  const [underBudget, setUnderBudget] = useState<boolean>(false);
-  const [onBudget, setOnBudget] = useState<boolean>(false);
+  // const calculateSpendPerformance = () => {
+  //   if (userBudget == undefined) {
+  //     setNoBudget(true);
+  //   } else {
+  //     let mix = userBudget.monthlyIncome * currentMixOfMonth;
+  //     let targetVsSpent = (mix - amountSpentInCurrentMonth).toFixed(2);
+  //     setMoneySpentVsTargetSpend(targetVsSpent);
+  //     setNoBudget(false);
+  //   }
+  //   confirmVarToBudget();
+  // };
 
-  const calculateSpendPerformance = () => {
-    if (userBudget == undefined) {
-      setNoBudget(true);
-    } else {
-      let mix = userBudget.monthlyIncome * currentMixOfMonth;
-      let targetVsSpent = (mix - amountSpentInCurrentMonth).toFixed(2);
-      setMoneySpentVsTargetSpend((targetVsSpent));
-      setNoBudget(false);
-    }
-    confirmVarToBudget();
-  };
+  // const confirmVarToBudget = () => {
+  //   if (Number(moneySpentVsTargetSpend) < -50) {
+  //     setOverBudget(true);
+  //     setUnderBudget(false);
+  //     setOnBudget(false);
+  //   } else if (Number(moneySpentVsTargetSpend) > 50) {
+  //     setOverBudget(false);
+  //     setUnderBudget(true);
+  //     setOnBudget(false);
+  //   } else {
+  //     setOverBudget(false);
+  //     setUnderBudget(false);
+  //     setOnBudget(true);
+  //   }
+  // };
 
-  const confirmVarToBudget = () => {
-    if (Number(moneySpentVsTargetSpend) < -50) {
-      setOverBudget(true);
-      setUnderBudget(false);
-      setOnBudget(false);
-    } else if (Number(moneySpentVsTargetSpend) > 50) {
-      setOverBudget(false);
-      setUnderBudget(true);
-      setOnBudget(false);
-    } else {
-      setOverBudget(false);
-      setUnderBudget(false);
-      setOnBudget(true);
-    }
-  };
-
-  useEffect(() => {
-    calculateSpendPerformance();
-  }, [userBudget]);
+  // useEffect(() => {
+  //   calculateSpendPerformance();
+  // }, [userBudget]);
 
   return (
     <div>
@@ -95,38 +98,45 @@ const ShowSpentPage = ({
         {noBudget && (
           <p className="budget-page__spent">You haven't set a budget yet</p>
         )}
-        {overBudget &&  (
-          <p className="budget-page__spent">You are currently £{String(Number(moneySpentVsTargetSpend)*-1)} over budget.</p>
+        {overBudget && (
+          <p className="budget-page__spent">
+            You are currently £{String(Number(moneySpentVsTargetSpend) * -1)}{" "}
+            over budget.
+          </p>
         )}
-         {underBudget &&  (
-          <p className="budget-page__spent">You are currently £{moneySpentVsTargetSpend} under budget.</p>
+        {underBudget && (
+          <p className="budget-page__spent">
+            You are currently £{moneySpentVsTargetSpend} under budget.
+          </p>
         )}
-        {onBudget && !noBudget &&(
-          <p className="budget-page__spent">You are currently spending how much you planned.</p>
+        {onBudget && !noBudget && (
+          <p className="budget-page__spent">
+            You are currently spending how much you planned.
+          </p>
         )}
         <p className="budget-page__subheading">Bills:</p>
         <p className="budget-page__spent">
-          £{userBillsSpent} out of £{userBudget?.bills} spent
+          £{userBillsSpent} out of £{userBudget ? userBudget.bills: 0} spent
         </p>
         <p className="budget-page__subheading">Transport:</p>
         <p className="budget-page__spent">
-          £{userTransportSpent} out of £{userBudget?.transport} spent
+          £{userTransportSpent} out of £{userBudget ? userBudget.transport: 0} spent
         </p>
         <p className="budget-page__subheading">Groceries:</p>
         <p className="budget-page__spent">
-          £{userGroceriesSpent} out of £{userBudget?.groceries} spent
+          £{userGroceriesSpent} out of £{userBudget ? userBudget.groceries: 0} spent
         </p>
         <p className="budget-page__subheading">Health:</p>
         <p className="budget-page__spent">
-          £{userHealthSpent} out of £{userBudget?.health} spent
+          £{userHealthSpent} out of £{userBudget ?  userBudget.health: 0} spent
         </p>
         <p className="budget-page__subheading">Eating Out:</p>
         <p className="budget-page__spent">
-          £{userEatingOutSpent} out of £{userBudget?.eatingOut} spent
+          £{userEatingOutSpent} out of £{userBudget ? userBudget.eatingOut: 0} spent
         </p>
         <p className="budget-page__subheading">Entertainment:</p>
         <p className="budget-page__spent">
-          £{userEntertainmentSpent} out of £{userBudget?.entertainment} spent
+          £{userEntertainmentSpent} out of £{userBudget ? userBudget.entertainment: 0} spent
         </p>
         <p className="budget-page__subheading">Gifts:</p>
         <p className="budget-page__spent">
@@ -134,7 +144,7 @@ const ShowSpentPage = ({
         </p>
         <p className="budget-page__subheading">Shopping:</p>
         <p className="budget-page__spent">
-          £{userShoppingSpent} out of £{userBudget?.shopping} spent
+          £{userShoppingSpent} out of £{userBudget ? userBudget.shopping : 0} spent
         </p>
         <Link to="/setsbudgets">
           <Button label="Update budgets" color="primary" size="medium" />

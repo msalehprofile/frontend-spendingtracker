@@ -5,7 +5,12 @@ import Welcome from "../Welcome/Welcome";
 import UploadSpendPage from "../UploadSpendPage/UploadSpendPage";
 import CreateUser from "../CreateUser/CreateUser";
 import LogInPage from "../LogInPage/LogInPage";
-import { UserLogin, Users, SubmittedSpends, UserBudget } from "../../DataTypes/DataTypes";
+import {
+  UserLogin,
+  Users,
+  SubmittedSpends,
+  UserBudget,
+} from "../../DataTypes/DataTypes";
 import Trends from "../Trends/Trends";
 import UserProfile from "../UserProfile/UserProfile";
 import ShowBudgetPage from "../ShowBudgetPage/ShowBudgetPage";
@@ -21,8 +26,9 @@ const MainApp = () => {
   const [foundUser, setFoundUser] = useState<Users>();
   const [userPasswordEntered, setUserPasswordEntered] = useState<string>();
   const [incorrectPassword, setIncorrectPassword] = useState<boolean>(false);
-  const [listOfUsersAllTimeSpends, setListOfUsersAllTimeSpends] =
-    useState<SubmittedSpends[]>([]);
+  const [listOfUsersAllTimeSpends, setListOfUsersAllTimeSpends] = useState<
+    SubmittedSpends[]
+  >([]);
   const [usersCurrentMonthSpends, setUsersCurrentMonthSpends] = useState<
     SubmittedSpends[]
   >([]);
@@ -49,6 +55,16 @@ const MainApp = () => {
   const [userTransportSpent, setUserTransportSpent] = useState<string>("");
   const [userBudget, setUserBudget] = useState<UserBudget | undefined>();
 
+  const [noBudget, setNoBudget] = useState<boolean>(true);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const currentMixOfMonth = today.getDate() / lastDayOfMonth.getDate();
+  const [moneySpentVsTargetSpend, setMoneySpentVsTargetSpend] =
+    useState<string>("");
+  const [overBudget, setOverBudget] = useState<boolean>(false);
+  const [underBudget, setUnderBudget] = useState<boolean>(false);
+  const [onBudget, setOnBudget] = useState<boolean>(false);
+
+  console.log(moneySpentVsTargetSpend);
   const handleSubmitLogIn = async (userLogin: UserLogin) => {
     setUserPasswordEntered(userLogin.password);
     const resp = await fetch(
@@ -84,7 +100,8 @@ const MainApp = () => {
     handleGetUserCurrentMonthSpends(userId);
     handleGetThisMonthsMoneySpent(userId);
     handleGetLastMonthsMoneySpent(userId);
-    handleGetUserBugdets(userId)
+    handleGetUserBugdets(userId);
+    calculateSpendPerformance();
     setSpendsByCat();
     navigate("/dashboard");
   };
@@ -110,10 +127,11 @@ const MainApp = () => {
         setIncorrectPassword(false);
         navigate("/dashboard");
         handleGetUserSpends(userId);
-        handleGetUserBugdets(userId)
+        handleGetUserBugdets(userId);
         handleGetUserCurrentMonthSpends(userId);
         handleGetThisMonthsMoneySpent(userId);
         handleGetLastMonthsMoneySpent(userId);
+        calculateSpendPerformance();
       } else {
         setIncorrectPassword(true);
       }
@@ -184,82 +202,105 @@ const MainApp = () => {
       setSpendEqualToLastMonth(true);
     }
 
-    if (variance > 1 || variance <-1) {
+    if (variance > 1 || variance < -1) {
       setSpendDifferenceVsLastMonth(true);
       setSpendEqualToLastMonth(false);
-    } 
+    }
   }, [usersCurrentMonthSpends]);
 
   const setSpendsByCat = () => {
-    let shoppingSpends =0;
-    let giftSpends =0;
-    let billsSpend=0;
-    let eatingOutSpends=0;
-    let entertainmentSpends=0;
-    let groceriesSpent=0;
-    let healthSpent=0;
-    let transportSpends=0;
+    let shoppingSpends = 0;
+    let giftSpends = 0;
+    let billsSpend = 0;
+    let eatingOutSpends = 0;
+    let entertainmentSpends = 0;
+    let groceriesSpent = 0;
+    let healthSpent = 0;
+    let transportSpends = 0;
 
     for (let i = 0; i < usersCurrentMonthSpends.length; i++) {
-      if (
-        usersCurrentMonthSpends[i].category.toLowerCase() == "shopping"
-      ) {
-        shoppingSpends += usersCurrentMonthSpends[i].amount
+      if (usersCurrentMonthSpends[i].category.toLowerCase() == "shopping") {
+        shoppingSpends += usersCurrentMonthSpends[i].amount;
       }
       if (usersCurrentMonthSpends[i].category.toLowerCase() == "gifts") {
-        giftSpends += usersCurrentMonthSpends[i].amount
-      
+        giftSpends += usersCurrentMonthSpends[i].amount;
       }
       if (usersCurrentMonthSpends[i].category.toLowerCase() == "transport") {
-        transportSpends += usersCurrentMonthSpends[i].amount
-      
+        transportSpends += usersCurrentMonthSpends[i].amount;
       }
       if (usersCurrentMonthSpends[i].category.toLowerCase() == "bills") {
-        billsSpend += usersCurrentMonthSpends[i].amount
+        billsSpend += usersCurrentMonthSpends[i].amount;
+      }
+      if (usersCurrentMonthSpends[i].category.toLowerCase() == "groceries") {
+        groceriesSpent += usersCurrentMonthSpends[i].amount;
+      }
+      if (usersCurrentMonthSpends[i].category.toLowerCase() == "health") {
+        healthSpent += usersCurrentMonthSpends[i].amount;
       }
       if (
-        usersCurrentMonthSpends[i].category.toLowerCase() == "groceries"
+        usersCurrentMonthSpends[i].category.toLowerCase() == "entertainment"
       ) {
-        groceriesSpent += usersCurrentMonthSpends[i].amount
-        
+        entertainmentSpends += usersCurrentMonthSpends[i].amount;
       }
-      if (
-        usersCurrentMonthSpends[i].category.toLowerCase() == "health"
-      ) {
-        healthSpent += usersCurrentMonthSpends[i].amount
+      if (usersCurrentMonthSpends[i].category == "Eating Out") {
+        eatingOutSpends += usersCurrentMonthSpends[i].amount;
       }
-      if (
-        usersCurrentMonthSpends[i].category.toLowerCase() ==
-        "entertainment"
-      ) {
-        entertainmentSpends += usersCurrentMonthSpends[i].amount
-      }
-      if (
-        usersCurrentMonthSpends[i].category == "Eating Out"
-      ) {
-        eatingOutSpends += usersCurrentMonthSpends[i].amount
-      }
-
     }
-    setUserShoppingSpent((Number(shoppingSpends).toFixed(2)))
-    setUserEatingOutSpent((Number(eatingOutSpends).toFixed(2)))
-    setUserGiftsSpent((Number(giftSpends).toFixed(2)))
-    setUserBillsSpent((Number(billsSpend).toFixed(2)))
-    setUserGroceriesSpent((Number(groceriesSpent).toFixed(2)))
-    setUserHealthSpent((Number(healthSpent).toFixed(2)))
-    setUserEntertainmentSpent((Number(entertainmentSpends).toFixed(2)))
-    setUserTransportSpent((Number(transportSpends).toFixed(2)))
-  }
-  
+    setUserShoppingSpent(Number(shoppingSpends).toFixed(2));
+    setUserEatingOutSpent(Number(eatingOutSpends).toFixed(2));
+    setUserGiftsSpent(Number(giftSpends).toFixed(2));
+    setUserBillsSpent(Number(billsSpend).toFixed(2));
+    setUserGroceriesSpent(Number(groceriesSpent).toFixed(2));
+    setUserHealthSpent(Number(healthSpent).toFixed(2));
+    setUserEntertainmentSpent(Number(entertainmentSpends).toFixed(2));
+    setUserTransportSpent(Number(transportSpends).toFixed(2));
+  };
+
+  const calculateSpendPerformance = () => {
+    if (userBudget == undefined) {
+      setNoBudget(true);
+    } else {
+      let mix = userBudget.monthlyIncome * currentMixOfMonth;
+      let targetVsSpent = (mix - amountSpentInCurrentMonth).toFixed(2);
+      console.log(mix);
+      console.log(targetVsSpent);
+      setMoneySpentVsTargetSpend(targetVsSpent);
+      setNoBudget(false);
+    }
+    confirmVarToBudget();
+  };
+
+  console.log(moneySpentVsTargetSpend);
+  const confirmVarToBudget = () => {
+    if (Number(moneySpentVsTargetSpend) < -50) {
+      setOverBudget(true);
+      setUnderBudget(false);
+      setOnBudget(false);
+    } else if (Number(moneySpentVsTargetSpend) > 50) {
+      setOverBudget(false);
+      setUnderBudget(true);
+      setOnBudget(false);
+    } else {
+      setOverBudget(false);
+      setUnderBudget(false);
+      setOnBudget(true);
+    }
+  };
+
   useEffect(() => {
-    setSpendsByCat()
-  }, [variance]);
+    setSpendsByCat();
+    calculateSpendPerformance();
+    confirmVarToBudget();
+  }, [variance, userBudget]);
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Welcome brandName={brandName} />} />
-        <Route path="/createuser" element={<CreateUser brandName={brandName}/>} />
+        <Route
+          path="/createuser"
+          element={<CreateUser brandName={brandName} />}
+        />
         <Route
           path="/login"
           element={
@@ -333,15 +374,26 @@ const MainApp = () => {
                   userEatingOutSpent={userEatingOutSpent}
                   userEntertainmentSpent={userEntertainmentSpent}
                   userTransportSpent={userTransportSpent}
-                  today={today}
                   userBudget={userBudget}
+                  onBudget={onBudget}
+                  overBudget={overBudget}
+                  noBudget={noBudget}
+                  underBudget={underBudget}
+                  moneySpentVsTargetSpend={moneySpentVsTargetSpend}
                 />
               }
             />
             <Route
               path="/setsbudgets"
               element={
-                <SetsBudgetsPage brandName={brandName} userId={userId} userBudget={userBudget} handleGetUserBugdets={handleGetUserBugdets}/>
+                <SetsBudgetsPage
+                  brandName={brandName}
+                  userId={userId}
+                  userBudget={userBudget}
+                  handleGetUserBugdets={handleGetUserBugdets}
+                  calculateSpendPerformance={calculateSpendPerformance}
+                  confirmVarToBudget={confirmVarToBudget}
+                />
               }
             />
           </>
