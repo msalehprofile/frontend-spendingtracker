@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardNav from "../../Components/DashboardNav/DashboardNav";
 import Header from "../../Components/Header/Header";
 import "./ShowBudgetPage.scss";
-import { SubmittedSpends, UserBudget } from "../../DataTypes/DataTypes";
+import { UserBudget } from "../../DataTypes/DataTypes";
 import Button from "../../Components/Button/Button";
 import { Link } from "react-router-dom";
 
@@ -72,8 +72,6 @@ const ShowSpentPage = ({
       setOnBudget(true);
     }
   };
-
-  console.log(userEntertainmentSpent)
 
   useEffect(() => {
     calculateSpendPerformance();

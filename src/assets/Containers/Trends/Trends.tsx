@@ -14,6 +14,8 @@ import {
 } from "chart.js/auto";
 import { useEffect, useState } from "react";
 import TransactionTile from "../../Components/TransactionTile/TransactionTile";
+import PieChart from "../../Components/PieChart/PieChart";
+import Button from "../../Components/Button/Button";
 
 type TrendsProps = {
   daysInMonth: number[];
@@ -24,7 +26,16 @@ type TrendsProps = {
   amountSpentInCurrentMonth: number;
   variance: number;
   spendEqualToLastMonth: boolean;
-  spendMoreThanLastMonth: boolean;
+  spendDifferenceVsLastMonth: boolean;
+  userFirstName: string;
+  userHealthSpent: string;
+  userGroceriesSpent: string;
+  userShoppingSpent: string;
+  userGiftsSpent: string;
+  userBillsSpent: string;
+  userEatingOutSpent: string;
+  userEntertainmentSpent: string;
+  userTransportSpent: string;
 };
 
 const Trends = ({
@@ -36,9 +47,20 @@ const Trends = ({
   amountSpentInCurrentMonth,
   variance,
   spendEqualToLastMonth,
-  spendMoreThanLastMonth,
+  userFirstName,
+  spendDifferenceVsLastMonth,
+  userHealthSpent,
+  userGroceriesSpent,
+  userShoppingSpent,
+  userGiftsSpent,
+  userBillsSpent,
+  userEntertainmentSpent,
+  userEatingOutSpent,
+  userTransportSpent,
 }: TrendsProps) => {
   const [spendsByDay, setSpendsByDay] = useState<number[]>([]);
+  const [pieChart, setPieChart] = useState<boolean>(false);
+  const [barChart, setBarChart] = useState<boolean>(true);
 
   useEffect(() => {
     const startingSpends: number[] = [];
@@ -73,7 +95,28 @@ const Trends = ({
     Legend
   );
 
-  const options = {};
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: Math.max(...spendsByDay) + 10,
+      },
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: "Amount spent per day (£)",
+        position: "bottom" as "bottom",
+        padding: {
+          top: 10,
+          bottom: 0,
+        },
+      },
+      legend: {
+        display: false,
+      },
+    },
+  };
 
   const barChartData = {
     labels: daysInMonth,
@@ -81,37 +124,89 @@ const Trends = ({
       {
         label: "Amount spent ber day (£)",
         data: spendsByDay,
+        backgroundColor: ["#92ddce"],
+        borderColor: ["#92ddce"],
+        borderWidth: 3,
       },
     ],
   };
 
+  const handleClickSpendsByDay = () => {
+    setBarChart(true);
+    setPieChart(false);
+  };
+
+  const handleClickCats = () => {
+    setBarChart(false);
+    setPieChart(true);
+  };
   return (
-    <div className="trends">
+    <>
       <Header brandName={brandName} />
-      <h2 className="trends__date">
-        {String(
-          `${today.getDate()} / ${
-            today.getMonth() + 1
-          } / ${today.getFullYear()}`
+      <div className="trends">
+        <h2 className="trends__date">
+          {String(
+            `${today.getDate()} / ${
+              today.getMonth() + 1
+            } / ${today.getFullYear()}`
+          )}
+        </h2>
+        <h2 className="trends__heading">
+          {userFirstName} here are your trends:
+        </h2>
+        <div className="trends__buttons">
+          <Button
+            onClick={handleClickSpendsByDay}
+            label="By day"
+            size="medium"
+            color="primary"
+          />
+          <Button
+            onClick={handleClickCats}
+            label="By category"
+            size="medium"
+            color="primary"
+          />
+        </div>
+        {barChart && <Bar options={options} data={barChartData} />}
+        {pieChart && (
+          <PieChart
+            userHealthSpent={userHealthSpent}
+            userGroceriesSpent={userGroceriesSpent}
+            userShoppingSpent={userShoppingSpent}
+            userGiftsSpent={userGiftsSpent}
+            userBillsSpent={userBillsSpent}
+            userEatingOutSpent={userEatingOutSpent}
+            userEntertainmentSpent={userEntertainmentSpent}
+            userTransportSpent={userTransportSpent}
+          />
         )}
-      </h2>
-      <Bar options={options} data={barChartData} />
-      <h2  className="trends__spends">Total spent this month: £{amountSpentInCurrentMonth}</h2>
-      {spendMoreThanLastMonth && <h2 className="trends__comparison">This is {variance}% more than last month!</h2>}
-      {!spendMoreThanLastMonth && <h2 className="trends__comparison">This is {variance}% vs last month!</h2>}
-      {spendEqualToLastMonth && <h2 className="trends__comparison">This is the same amount as last month!</h2>}
-      <h2 className="trends__heading">Recent Transactions:</h2>
-      {listOfUsersAllTimeSpends.map((spend) => (
-        <TransactionTile
-          key={spend.id}
-          vendor={spend.vendor}
-          amount={Number(spend.amount).toFixed(2)}
-          category={spend.category}
-          date={spend.date}
-        />
-      ))}
+        <h2 className="trends__spends">
+          Total spent this month: £{amountSpentInCurrentMonth}
+        </h2>
+        {spendDifferenceVsLastMonth && (
+          <h2 className="trends__comparison">
+            This is {variance}% vs last month!
+          </h2>
+        )}
+        {spendEqualToLastMonth && (
+          <h2 className="trends__comparison">
+            This is the same amount as last month!
+          </h2>
+        )}
+        <h2 className="trends__heading">Recent Transactions:</h2>
+        {listOfUsersAllTimeSpends.map((spend) => (
+          <TransactionTile
+            key={spend.id}
+            vendor={spend.vendor}
+            amount={Number(spend.amount).toFixed(2)}
+            category={spend.category}
+            date={spend.date}
+          />
+        ))}
+      </div>
       <DashboardNav />
-    </div>
+    </>
   );
 };
 

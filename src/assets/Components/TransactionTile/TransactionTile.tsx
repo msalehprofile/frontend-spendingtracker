@@ -16,19 +16,32 @@ const TransactionTile = ({
   let emojiCategory;
 
   switch (category.toLowerCase()) {
-    case "food":
+    case "eating out":
       emojiCategory = "🍔";
       break;
-    case "drink":
-      emojiCategory = "☕";
+    case "transport":
+      emojiCategory = "🚌";
       break;
-    case "clothing":
+    case "shopping":
       emojiCategory = "🛍";
       break;
-    case "retail":
-      emojiCategory = "🛍";
+    case "groceries":
+      emojiCategory = "🥦";
+      break;
+    case "bills":
+      emojiCategory = "🧾";
+      break;
+    case "entertainment":
+      emojiCategory = "🎭";
+      break;
+      case "gifts":
+      emojiCategory = "🎁";
+      break;
+      case "health":
+      emojiCategory = "🧬";
+      break;
   }
-
+ 
   return (
     <div className="transaction-tile">
       <p className="transaction-tile__category">

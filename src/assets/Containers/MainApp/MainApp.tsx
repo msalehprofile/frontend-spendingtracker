@@ -35,7 +35,7 @@ const MainApp = () => {
   const [variance, setVariance] = useState<number>(0);
   const [spendEqualToLastMonth, setSpendEqualToLastMonth] =
     useState<boolean>(false);
-  const [spendMoreThanLastMonth, setSpendMoreThanLastMonth] =
+  const [spendDifferenceVsLastMonth, setSpendDifferenceVsLastMonth] =
     useState<boolean>(false);
   const navigate = useNavigate();
   const [userBillsSpent, setUserBillsSpent] = useState<string>("");
@@ -184,13 +184,10 @@ const MainApp = () => {
       setSpendEqualToLastMonth(true);
     }
 
-    if (variance > 1) {
-      setSpendMoreThanLastMonth(true);
+    if (variance > 1 || variance <-1) {
+      setSpendDifferenceVsLastMonth(true);
       setSpendEqualToLastMonth(false);
-    } else {
-      setSpendMoreThanLastMonth(false);
-      setSpendEqualToLastMonth(false);
-    }
+    } 
   }, [usersCurrentMonthSpends]);
 
   const setSpendsByCat = () => {
@@ -278,6 +275,7 @@ const MainApp = () => {
               path="/dashboard"
               element={
                 <Trends
+                  userFirstName={userFirstName}
                   daysInMonth={daysInMonth}
                   usersCurrentMonthSpends={usersCurrentMonthSpends}
                   today={today}
@@ -286,7 +284,15 @@ const MainApp = () => {
                   amountSpentInCurrentMonth={amountSpentInCurrentMonth}
                   variance={variance}
                   spendEqualToLastMonth={spendEqualToLastMonth}
-                  spendMoreThanLastMonth={spendMoreThanLastMonth}
+                  spendDifferenceVsLastMonth={spendDifferenceVsLastMonth}
+                  userHealthSpent={userHealthSpent}
+                  userGroceriesSpent={userGroceriesSpent}
+                  userShoppingSpent={userShoppingSpent}
+                  userGiftsSpent={userGiftsSpent}
+                  userBillsSpent={userBillsSpent}
+                  userEatingOutSpent={userEatingOutSpent}
+                  userEntertainmentSpent={userEntertainmentSpent}
+                  userTransportSpent={userTransportSpent}
                 />
               }
             />
