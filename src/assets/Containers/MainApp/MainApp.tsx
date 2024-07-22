@@ -18,10 +18,10 @@ import SetsBudgetsPage from "../SetBudgetsPage/SetsBudgetsPage";
 
 const MainApp = () => {
   const brandName = "juniper";
-  const [userFirstName, setUserFirstName] = useState<string>("Terry");
-  const [userSecondName, setUserSecondName] = useState<string>("Smith");
-  const [userEmail, setUserEmail] = useState<string>("test@test.com");
-  const [userId, setUserId] = useState<number>(252);
+  const [userFirstName, setUserFirstName] = useState<string>("");
+  const [userSecondName, setUserSecondName] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [userId, setUserId] = useState<number>(0);
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(true);
   const [foundUser, setFoundUser] = useState<Users>();
   const [userPasswordEntered, setUserPasswordEntered] = useState<string>();
@@ -64,7 +64,6 @@ const MainApp = () => {
   const [underBudget, setUnderBudget] = useState<boolean>(false);
   const [onBudget, setOnBudget] = useState<boolean>(false);
 
-  console.log(moneySpentVsTargetSpend);
   const handleSubmitLogIn = async (userLogin: UserLogin) => {
     setUserPasswordEntered(userLogin.password);
     const resp = await fetch(
@@ -122,16 +121,9 @@ const MainApp = () => {
         setUserFirstName(foundUser.firstName);
         setUserSecondName(foundUser.secondName);
         setUserId(foundUser.id);
-        setUserEmail(foundUser.email);
         setUserLoggedIn(true);
         setIncorrectPassword(false);
-        navigate("/dashboard");
-        handleGetUserSpends(userId);
-        handleGetUserBugdets(userId);
-        handleGetUserCurrentMonthSpends(userId);
-        handleGetThisMonthsMoneySpent(userId);
-        handleGetLastMonthsMoneySpent(userId);
-        calculateSpendPerformance();
+        navigate("/budgets");
       } else {
         setIncorrectPassword(true);
       }
@@ -262,15 +254,12 @@ const MainApp = () => {
     } else {
       let mix = userBudget.monthlyIncome * currentMixOfMonth;
       let targetVsSpent = (mix - amountSpentInCurrentMonth).toFixed(2);
-      console.log(mix);
-      console.log(targetVsSpent);
       setMoneySpentVsTargetSpend(targetVsSpent);
       setNoBudget(false);
     }
     confirmVarToBudget();
   };
 
-  console.log(moneySpentVsTargetSpend);
   const confirmVarToBudget = () => {
     if (Number(moneySpentVsTargetSpend) < -50) {
       setOverBudget(true);
@@ -288,10 +277,19 @@ const MainApp = () => {
   };
 
   useEffect(() => {
-    setSpendsByCat();
-    calculateSpendPerformance();
-    confirmVarToBudget();
-  }, [variance, userBudget]);
+    if (foundUser != undefined) {
+      setUserEmail(foundUser.email);
+      handleGetUserSpends(userId);
+      handleGetUserBugdets(userId);
+      handleGetUserCurrentMonthSpends(userId);
+      handleGetThisMonthsMoneySpent(userId);
+      handleGetLastMonthsMoneySpent(userId);
+      calculateSpendPerformance();
+      setSpendsByCat();
+      calculateSpendPerformance();
+      confirmVarToBudget();
+    }
+  }, [userId, variance, userBudget]);
 
   return (
     <>
