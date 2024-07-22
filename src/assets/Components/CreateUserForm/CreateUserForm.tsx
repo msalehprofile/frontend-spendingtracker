@@ -24,7 +24,6 @@ export const CreateUserForm = ({
       `http://localhost:8080/checkuserexists/${user.email}`
     );
     const existingEmail = await response.json();
-    console.log(existingEmail)
     setEmailInUse(existingEmail);
   };
 
@@ -51,7 +50,6 @@ export const CreateUserForm = ({
 
   const checkAbleToSubmit = () => {
     if (!emailInUse && !incompletedData && !invalidEmail) {
-        console.log("Thank you for creating a user");
         handleSubmit(user);
         setIncompletedDate(false);
         setEmailInUse(false);

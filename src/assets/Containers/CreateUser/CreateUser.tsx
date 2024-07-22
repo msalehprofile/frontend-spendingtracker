@@ -4,7 +4,11 @@ import CreateUserForm from "../../Components/CreateUserForm/CreateUserForm";
 import Header from "../../Components/Header/Header";
 import { Link } from "react-router-dom";
 
-const CreateUser = () => {
+type CreateUserProps = {
+  brandName: string;
+}
+
+const CreateUser = ({brandName}: CreateUserProps) => {
 
   const handleSubmit = async (user: Users) => {
     await fetch("http://localhost:8080/createuser", {
@@ -24,7 +28,7 @@ const CreateUser = () => {
 
   return (
     <div className="create-user">
-      <Header/>
+      <Header brandName={brandName}/>
       <Link to="/"><p className="create-user__back">back</p></Link>
       
       <CreateUserForm

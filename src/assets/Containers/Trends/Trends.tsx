@@ -19,7 +19,7 @@ type TrendsProps = {
   daysInMonth: number[];
   usersCurrentMonthSpends: SubmittedSpends[];
   today: Date;
-  usersAllTimeSpends: SubmittedSpends[];
+  listOfUsersAllTimeSpends: SubmittedSpends[];
   brandName: string;
   amountSpentInCurrentMonth: number;
   variance: number;
@@ -31,7 +31,7 @@ const Trends = ({
   daysInMonth,
   usersCurrentMonthSpends,
   today,
-  usersAllTimeSpends,
+  listOfUsersAllTimeSpends,
   brandName,
   amountSpentInCurrentMonth,
   variance,
@@ -101,7 +101,7 @@ const Trends = ({
       {!spendMoreThanLastMonth && <h2 className="trends__comparison">This is {variance}% vs last month!</h2>}
       {spendEqualToLastMonth && <h2 className="trends__comparison">This is the same amount as last month!</h2>}
       <h2 className="trends__heading">Recent Transactions:</h2>
-      {usersAllTimeSpends.map((spend) => (
+      {listOfUsersAllTimeSpends.map((spend) => (
         <TransactionTile
           key={spend.id}
           vendor={spend.vendor}

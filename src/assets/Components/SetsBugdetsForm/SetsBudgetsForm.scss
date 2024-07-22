@@ -1,0 +1,30 @@
+@use 'src/Variables/Variables.scss' as *;
+
+.sets-budgets-form {
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    &__heading{
+        padding: 4px;
+        margin-bottom: 30px;
+        font-size: $title-font-size;
+    }
+
+    &__subheading{
+        padding: 4px;
+        margin: 6px 0;
+    }
+
+    &__input {
+        padding: 7px;
+        margin-bottom: 10px;
+        border-radius: 30px;
+    }
+
+    &__error {
+        margin: 5px 45px ;
+        color: $color-error;
+    }
+}
