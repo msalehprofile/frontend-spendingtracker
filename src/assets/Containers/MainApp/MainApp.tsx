@@ -46,6 +46,7 @@ const MainApp = () => {
   const [userShoppingSpent, setUserShoppingSpent] = useState<string>("");
   const [userGroceriesSpent, setUserGroceriesSpent] = useState<string>("");
   const [userHealthSpent, setUserHealthSpent] = useState<string>("");
+  const [userTransportSpent, setUserTransportSpent] = useState<string>("");
   const [userBudget, setUserBudget] = useState<UserBudget | undefined>();
 
   const handleSubmitLogIn = async (userLogin: UserLogin) => {
@@ -200,6 +201,7 @@ const MainApp = () => {
     let entertainmentSpends=0;
     let groceriesSpent=0;
     let healthSpent=0;
+    let transportSpends=0;
 
     for (let i = 0; i < usersCurrentMonthSpends.length; i++) {
       if (
@@ -209,6 +211,10 @@ const MainApp = () => {
       }
       if (usersCurrentMonthSpends[i].category.toLowerCase() == "gifts") {
         giftSpends += usersCurrentMonthSpends[i].amount
+      
+      }
+      if (usersCurrentMonthSpends[i].category.toLowerCase() == "transport") {
+        transportSpends += usersCurrentMonthSpends[i].amount
       
       }
       if (usersCurrentMonthSpends[i].category.toLowerCase() == "bills") {
@@ -245,8 +251,8 @@ const MainApp = () => {
     setUserGroceriesSpent((Number(groceriesSpent).toFixed(2)))
     setUserHealthSpent((Number(healthSpent).toFixed(2)))
     setUserEntertainmentSpent((Number(entertainmentSpends).toFixed(2)))
+    setUserTransportSpent((Number(transportSpends).toFixed(2)))
   }
-  console.log(userEatingOutSpent)
   
   useEffect(() => {
     setSpendsByCat()
@@ -320,6 +326,7 @@ const MainApp = () => {
                   userBillsSpent={userBillsSpent}
                   userEatingOutSpent={userEatingOutSpent}
                   userEntertainmentSpent={userEntertainmentSpent}
+                  userTransportSpent={userTransportSpent}
                   today={today}
                   userBudget={userBudget}
                 />

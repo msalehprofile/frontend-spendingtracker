@@ -43,6 +43,13 @@ const SetsBudgetsForm = ({defaultBudgets, handleSubmitFirstBudget}: SetsBudgetsF
           placeholder="£0"
           onInput={(event) => handleInput(event, "bills")}
         />
+        <p className="sets-budgets-form__subheading">Transport:</p>
+        <input
+          type="text"
+          className="sets-budgets-form__input"
+          placeholder="£0"
+          onInput={(event) => handleInput(event, "transport")}
+        />
         <p className="sets-budgets-form__subheading">Eating out:</p>
         <input
           type="text"

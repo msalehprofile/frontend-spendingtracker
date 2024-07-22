@@ -16,8 +16,9 @@ type ShowSpentPageProps = {
   userBillsSpent: string;
   userEatingOutSpent: string;
   userEntertainmentSpent: string;
+  userTransportSpent: string;
   today: Date;
-  userBudget: UserBudget;
+  userBudget: UserBudget | undefined;
 };
 
 const ShowSpentPage = ({
@@ -31,7 +32,8 @@ const ShowSpentPage = ({
   userEntertainmentSpent,
   userEatingOutSpent,
   today,
-  userBudget
+  userBudget,
+  userTransportSpent
 }: ShowSpentPageProps) => {
 
   const [noBudget, setNoBudget] = useState<boolean>(true);
@@ -44,13 +46,10 @@ const ShowSpentPage = ({
   const [onBudget, setOnBudget] = useState<boolean>(false);
 
   const calculateSpendPerformance = () => {
-    let mix = 4000 * currentMixOfMonth;
-    let targetVsSpent = mix - amountSpentInCurrentMonth;
-    setMoneySpentVsTargetSpend(targetVsSpent);
     if (userBudget == undefined) {
       setNoBudget(true);
     } else {
-      let mix = 4000 * currentMixOfMonth;
+      let mix = userBudget.monthlyIncome * currentMixOfMonth;
       let targetVsSpent = (mix - amountSpentInCurrentMonth).toFixed(2);
       setMoneySpentVsTargetSpend(Number(targetVsSpent));
       setNoBudget(false);
@@ -98,13 +97,13 @@ const ShowSpentPage = ({
         {noBudget && (
           <p className="budget-page__spent">You haven't set a budget yet</p>
         )}
-        {overBudget && !noBudget && (
-          <p className="budget-page__spent">You are currently {moneySpentVsTargetSpend} over budget.</p>
+        {overBudget &&  (
+          <p className="budget-page__spent">You are currently £{moneySpentVsTargetSpend*-1} over budget.</p>
         )}
-         {underBudget && !noBudget && (
+         {underBudget &&  (
           <p className="budget-page__spent">You are currently {moneySpentVsTargetSpend} under budget.</p>
         )}
-        {onBudget && !noBudget &&(
+        {onBudget && (
           <p className="budget-page__spent">You are currently spending how much you planned.</p>
         )}
         <p className="budget-page__subheading">Bills:</p>
@@ -134,6 +133,10 @@ const ShowSpentPage = ({
         <p className="budget-page__subheading">Health:</p>
         <p className="budget-page__spent">
           £{userHealthSpent} out of £{userBudget?.health} spent
+        </p>
+        <p className="budget-page__subheading">Transport:</p>
+        <p className="budget-page__spent">
+          £{userTransportSpent} out of £{userBudget?.transport} spent
         </p>
         <Link to="/setsbudgets">
           <Button label="Update budgets" color="primary" size="medium" />

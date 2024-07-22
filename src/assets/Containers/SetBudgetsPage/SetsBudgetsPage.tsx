@@ -22,6 +22,7 @@ const SetsBudgetsPage = ({ brandName, userId }: SetsBudgetsPageProps) => {
     shopping: 0,
     groceries: 0,
     health: 0,
+    transport: 0
   };
 
   const handleSubmitFirstBudget = async (userBudgetsToSet: UserBudget) => {

@@ -38,4 +38,5 @@ export type UserBudget = {
     shopping: number;
     groceries: number;
     health: number;
+    transport: number;
 }
