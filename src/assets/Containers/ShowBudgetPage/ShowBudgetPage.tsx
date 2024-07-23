@@ -1,10 +1,11 @@
-
 import DashboardNav from "../../Components/DashboardNav/DashboardNav";
 import Header from "../../Components/Header/Header";
 import "./ShowBudgetPage.scss";
 import { UserBudget } from "../../DataTypes/DataTypes";
 import Button from "../../Components/Button/Button";
 import { Link } from "react-router-dom";
+import Carousel from "react-material-ui-carousel";
+import BudgetPerfTile from "../../Components/BudgetPerfTile/BudgetPerfTile";
 
 type ShowSpentPageProps = {
   brandName: string;
@@ -37,48 +38,54 @@ const ShowSpentPage = ({
   userEatingOutSpent,
   userBudget,
   userTransportSpent,
-  onBudget, overBudget, noBudget, underBudget, moneySpentVsTargetSpend
+  onBudget,
+  overBudget,
+  noBudget,
+  underBudget,
+  moneySpentVsTargetSpend,
 }: ShowSpentPageProps) => {
-  // const [noBudget, setNoBudget] = useState<boolean>(true);
-  // const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-  // const currentMixOfMonth = today.getDate() / lastDayOfMonth.getDate();
-  // const [moneySpentVsTargetSpend, setMoneySpentVsTargetSpend] =
-  //   useState<string>("");
-  // const [overBudget, setOverBudget] = useState<boolean>(false);
-  // const [underBudget, setUnderBudget] = useState<boolean>(false);
-  // const [onBudget, setOnBudget] = useState<boolean>(false);
-
-  // const calculateSpendPerformance = () => {
-  //   if (userBudget == undefined) {
-  //     setNoBudget(true);
-  //   } else {
-  //     let mix = userBudget.monthlyIncome * currentMixOfMonth;
-  //     let targetVsSpent = (mix - amountSpentInCurrentMonth).toFixed(2);
-  //     setMoneySpentVsTargetSpend(targetVsSpent);
-  //     setNoBudget(false);
-  //   }
-  //   confirmVarToBudget();
-  // };
-
-  // const confirmVarToBudget = () => {
-  //   if (Number(moneySpentVsTargetSpend) < -50) {
-  //     setOverBudget(true);
-  //     setUnderBudget(false);
-  //     setOnBudget(false);
-  //   } else if (Number(moneySpentVsTargetSpend) > 50) {
-  //     setOverBudget(false);
-  //     setUnderBudget(true);
-  //     setOnBudget(false);
-  //   } else {
-  //     setOverBudget(false);
-  //     setUnderBudget(false);
-  //     setOnBudget(true);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   calculateSpendPerformance();
-  // }, [userBudget]);
+  const items = [
+    {
+      category: "Bills",
+      amountSpent: userBillsSpent ? userBillsSpent : 0,
+      budget: userBudget ? userBudget.bills : 0,
+    },
+    {
+      category: "Transport",
+      amountSpent: userTransportSpent ? userTransportSpent : 0,
+      budget: userBudget ? userBudget.transport : 0,
+    },
+    {
+      category: "Groceries",
+      amountSpent: userGroceriesSpent ? userGroceriesSpent : 0,
+      budget: userBudget ? userBudget.groceries : 0,
+    },
+    {
+      category: "Health",
+      amountSpent: userHealthSpent ? userHealthSpent : 0,
+      budget: userBudget ? userBudget.health : 0,
+    },
+    {
+      category: "Eating Out",
+      amountSpent: userEatingOutSpent ? userEatingOutSpent : 0,
+      budget: userBudget ? userBudget.eatingOut : 0,
+    },
+    {
+      category: "Entertainment",
+      amountSpent: userEntertainmentSpent ? userEntertainmentSpent : 0,
+      budget: userBudget ? userBudget.entertainment : 0,
+    },
+    {
+      category: "Gifts",
+      amountSpent: userGiftsSpent ? userGiftsSpent : 0,
+      budget: userBudget ? userBudget.gifts : 0,
+    },
+    {
+      category: "Shopping",
+      amountSpent: userShoppingSpent ? userShoppingSpent : 0,
+      budget: userBudget ? userBudget.shopping : 0,
+    },
+  ];
 
   return (
     <div>
@@ -87,9 +94,6 @@ const ShowSpentPage = ({
         <h2 className="budget-page__heading">Monthly Spends </h2>
         <p className="budget-page__income">
           £{userBudget?.monthlyIncome} income for the month
-        </p>
-        <p className="budget-page__comment">
-          See how you are tracking compared to your budget:
         </p>
         <p className="budget-page__subheading">Total:</p>
         <p className="budget-page__spent">
@@ -100,13 +104,13 @@ const ShowSpentPage = ({
         )}
         {overBudget && (
           <p className="budget-page__spent">
-            You are currently £{String(Number(moneySpentVsTargetSpend) * -1)}{" "}
+            You are currently <span className="budget-page__spent--bold">£{String(Number(moneySpentVsTargetSpend) * -1)}</span>{" "}
             over budget.
           </p>
         )}
         {underBudget && (
           <p className="budget-page__spent">
-            You are currently £{moneySpentVsTargetSpend} under budget.
+            You are currently <span className="budget-page__spent--bold">£{moneySpentVsTargetSpend}</span> under budget.
           </p>
         )}
         {onBudget && !noBudget && (
@@ -114,38 +118,17 @@ const ShowSpentPage = ({
             You are currently spending how much you planned.
           </p>
         )}
-        <p className="budget-page__subheading">Bills:</p>
-        <p className="budget-page__spent">
-          £{userBillsSpent} out of £{userBudget ? userBudget.bills: 0} spent
-        </p>
-        <p className="budget-page__subheading">Transport:</p>
-        <p className="budget-page__spent">
-          £{userTransportSpent} out of £{userBudget ? userBudget.transport: 0} spent
-        </p>
-        <p className="budget-page__subheading">Groceries:</p>
-        <p className="budget-page__spent">
-          £{userGroceriesSpent} out of £{userBudget ? userBudget.groceries: 0} spent
-        </p>
-        <p className="budget-page__subheading">Health:</p>
-        <p className="budget-page__spent">
-          £{userHealthSpent} out of £{userBudget ?  userBudget.health: 0} spent
-        </p>
-        <p className="budget-page__subheading">Eating Out:</p>
-        <p className="budget-page__spent">
-          £{userEatingOutSpent} out of £{userBudget ? userBudget.eatingOut: 0} spent
-        </p>
-        <p className="budget-page__subheading">Entertainment:</p>
-        <p className="budget-page__spent">
-          £{userEntertainmentSpent} out of £{userBudget ? userBudget.entertainment: 0} spent
-        </p>
-        <p className="budget-page__subheading">Gifts:</p>
-        <p className="budget-page__spent">
-          £{userGiftsSpent} out of £{userBudget?.gifts} spent
-        </p>
-        <p className="budget-page__subheading">Shopping:</p>
-        <p className="budget-page__spent">
-          £{userShoppingSpent} out of £{userBudget ? userBudget.shopping : 0} spent
-        </p>
+
+        <Carousel className="budget-page__carousel">
+          {items.map((item, i) => (
+            <BudgetPerfTile
+              key={i}
+              category={item.category}
+              amountSpent={item.amountSpent}
+              budget={item.budget}
+            />
+          ))}
+        </Carousel>
         <Link to="/setsbudgets">
           <Button label="Update budgets" color="primary" size="medium" />
         </Link>

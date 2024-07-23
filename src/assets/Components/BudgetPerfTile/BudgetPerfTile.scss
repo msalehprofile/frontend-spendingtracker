@@ -1,0 +1,22 @@
+@use 'src/Variables/Variables.scss' as *;
+
+.budgettile {
+    
+    height: 20vh;
+    border: 3px solid $primary-color;
+    display: flex;
+    flex-direction: column;
+
+    &__subheading {
+        margin: 10px;
+        padding: 10px;
+        font-size: $title-font-size;
+        text-align: center;
+    }
+
+    &__spent {
+        margin: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+}

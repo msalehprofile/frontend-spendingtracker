@@ -9,7 +9,18 @@
 
     &__subheading {
         margin: 20px 0 10px;
-        font-weight: bolder;
+        font-weight: bolder        
+    }
+
+    &__spent {
+        margin: 7px 0; 
+        &--bold {
+            font-weight: 700;
+        }
+    }
+
+    &__carousel {
+        margin: 40px 0 10px; 
     }
 
 }
