@@ -1,6 +1,6 @@
 import './LogInForm.scss';
 import { FormEvent, useState } from "react";
-import { Users, UserLogin } from "../../DataTypes/DataTypes";
+import { UserLogin } from "../../DataTypes/DataTypes";
 import Button from '../Button/Button';
 
 type LogInProps = {

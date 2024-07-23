@@ -113,13 +113,13 @@ const MainApp = () => {
     setUserId(0);
     setIncorrectPassword(false);
     setListOfUsersAllTimeSpends([]);
-    setUsersCurrentMonthSpends([])
-    setDaysInMonth([])
-    setVariance(0)
-    setAmountSpentInCurrentMonth(0)
-    setAmountSpentLastMonthLFL(0)
-    setSpendEqualToLastMonth(false)
-    setSpendDifferenceVsLastMonth(false)
+    setUsersCurrentMonthSpends([]);
+    setDaysInMonth([]);
+    setVariance(0);
+    setAmountSpentInCurrentMonth(0);
+    setAmountSpentLastMonthLFL(0);
+    setSpendEqualToLastMonth(false);
+    setSpendDifferenceVsLastMonth(false);
     setUserPasswordEntered("");
     setMoneySpentVsTargetSpend("");
     setUserBillsSpent("");
@@ -324,6 +324,7 @@ const MainApp = () => {
           path="/login"
           element={
             <LogInPage
+              brandName={brandName}
               handleSubmitLogIn={handleSubmitLogIn}
               incorrectPassword={incorrectPassword}
             />

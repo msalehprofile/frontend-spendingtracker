@@ -7,9 +7,10 @@ import { UserLogin } from "../../DataTypes/DataTypes";
 type LogInPageProps = {
   handleSubmitLogIn:  (user: UserLogin) => void
     incorrectPassword: boolean;
+    brandName: string;
 }
 
-const LogInPage = ({handleSubmitLogIn, incorrectPassword}: LogInPageProps) => {
+const LogInPage = ({handleSubmitLogIn, incorrectPassword, brandName}: LogInPageProps) => {
 
   const defaultLogInDetails = {
     email:"",
@@ -18,7 +19,7 @@ const LogInPage = ({handleSubmitLogIn, incorrectPassword}: LogInPageProps) => {
 
   return (
     <div className="login-page">
-      <Header/>
+      <Header brandName={brandName}/>
       <Link to="/" ><p className="login-page__back">back</p></Link>
       <LogInForm
         handleSubmitLogIn={handleSubmitLogIn}
