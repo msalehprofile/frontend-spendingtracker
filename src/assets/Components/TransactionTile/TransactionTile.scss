@@ -3,20 +3,19 @@
 .transaction-tile {
     margin: 10px 15px;
     border: 2px solid $secondary-color;
-    border-radius: 25%;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 0.7fr repeat(2, 1fr) 0.5fr ;
+    grid-template-rows: 0.7fr 1fr 1fr 0.5fr ;
 
     &__category {
-        padding: 0px 30px;
+        padding: 10px 25px;
         grid-column: 1;
-        grid-row: 2;
+        grid-row: 2/5;
     }
 
     &__vendor {
         grid-column: 2;
-        grid-row: 2;
+        grid-row:2;
     }
 
     &__date {
@@ -25,9 +24,9 @@
     }
 
     &__amount {
-        padding: 2px;
+        padding: 10px 30px;
         grid-column: 3;
-        grid-row: 2;
+        grid-row: 2/5;
         font-weight: bolder;
     }
 }
