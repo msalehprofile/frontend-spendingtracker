@@ -59,8 +59,8 @@ const Trends = ({
   userTransportSpent,
 }: TrendsProps) => {
   const [spendsByDay, setSpendsByDay] = useState<number[]>([]);
-  const [pieChart, setPieChart] = useState<boolean>(false);
-  const [barChart, setBarChart] = useState<boolean>(true);
+  const [pieChart, setPieChart] = useState<boolean>(true);
+  const [barChart, setBarChart] = useState<boolean>(false);
 
   useEffect(() => {
     const startingSpends: number[] = [];
@@ -122,7 +122,7 @@ const Trends = ({
     labels: daysInMonth,
     datasets: [
       {
-        label: "Amount spent ber day (£)",
+        label: "Amount spent (£)",
         data: spendsByDay,
         backgroundColor: ["#92ddce"],
         borderColor: ["#92ddce"],
