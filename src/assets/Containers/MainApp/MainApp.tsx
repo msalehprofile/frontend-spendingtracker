@@ -109,10 +109,31 @@ const MainApp = () => {
     setUserLoggedIn(false);
     setUserFirstName("");
     setUserSecondName("");
+    setUserEmail("");
     setUserId(0);
     setIncorrectPassword(false);
     setListOfUsersAllTimeSpends([]);
+    setUsersCurrentMonthSpends([])
+    setDaysInMonth([])
+    setVariance(0)
+    setAmountSpentInCurrentMonth(0)
+    setAmountSpentLastMonthLFL(0)
+    setSpendEqualToLastMonth(false)
+    setSpendDifferenceVsLastMonth(false)
     setUserPasswordEntered("");
+    setMoneySpentVsTargetSpend("");
+    setUserBillsSpent("");
+    setUserEatingOutSpent("");
+    setUserEntertainmentSpent("");
+    setUserGiftsSpent("");
+    setUserShoppingSpent("");
+    setUserGroceriesSpent("");
+    setUserHealthSpent("");
+    setUserTransportSpent("");
+    setNoBudget(true);
+    setOverBudget(false);
+    setUnderBudget(false);
+    setOnBudget(false);
   };
 
   const passwordCheck = () => {
@@ -123,7 +144,7 @@ const MainApp = () => {
         setUserId(foundUser.id);
         setUserLoggedIn(true);
         setIncorrectPassword(false);
-        navigate("/budgets");
+        navigate("/dashboard");
       } else {
         setIncorrectPassword(true);
       }
