@@ -54,7 +54,7 @@ export const CreateUserForm = ({
       setIncompletedDate(false);
       setEmailInUse(false);
       setInvalidEmail(false);
-      navigate("/");
+      navigate("/frontend-spendingtracker/");
     }
   };
 
