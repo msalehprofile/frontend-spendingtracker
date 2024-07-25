@@ -315,7 +315,7 @@ const MainApp = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Welcome brandName={brandName} />} />
+        <Route path="/frontend-spendingtracker/" element={<Welcome brandName={brandName} />} />
         <Route
           path="/createuser"
           element={<CreateUser brandName={brandName} />}
@@ -418,7 +418,7 @@ const MainApp = () => {
             />
           </>
         ) : (
-          <Route path="/*" element={<Navigate to="/" />} />
+          <Route path="/*" element={<Navigate to="/frontend-spendingtracker/" />} />
         )}
       </Routes>
     </>

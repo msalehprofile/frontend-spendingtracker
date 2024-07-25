@@ -20,7 +20,7 @@ const LogInPage = ({handleSubmitLogIn, incorrectPassword, brandName}: LogInPageP
   return (
     <div className="login-page">
       <Header brandName={brandName}/>
-      <Link to="/" ><p className="login-page__back">back</p></Link>
+      <Link to="/frontend-spendingtracker/" ><p className="login-page__back">back</p></Link>
       <LogInForm
         handleSubmitLogIn={handleSubmitLogIn}
         defaultLogInDetails={defaultLogInDetails}
