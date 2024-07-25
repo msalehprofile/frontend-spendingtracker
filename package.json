@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://msalehprofile.github.io/frontend-spendingtracker",
+  "homepage": "https://msalehprofile.github.io/frontend-spendingtracker/",
  "author": "M Saleh",
   "scripts": {
     "dev": "vite",
