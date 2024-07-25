@@ -34,7 +34,7 @@ export const CreateUserForm = ({
       setIncompletedDate(true);
       return;
     } else {
-        setIncompletedDate(false);
+      setIncompletedDate(false);
     }
 
     if (!user.email.includes("@")) {
@@ -45,28 +45,26 @@ export const CreateUserForm = ({
       getExistingEmail();
     }
 
-    checkAbleToSubmit()
+    checkAbleToSubmit();
   };
 
   const checkAbleToSubmit = () => {
     if (!emailInUse && !incompletedData && !invalidEmail) {
-        handleSubmit(user);
-        setIncompletedDate(false);
-        setEmailInUse(false);
-        setInvalidEmail(false);
-        navigate("/frontend-spendingtracker/")
-      }
-  }
+      handleSubmit(user);
+      setIncompletedDate(false);
+      setEmailInUse(false);
+      setInvalidEmail(false);
+      navigate("/");
+    }
+  };
 
   const handleInput = (event: FormEvent<HTMLInputElement>, key: string) =>
     setUser({ ...user, [key]: event.currentTarget.value });
 
-
-
   return (
     <div>
       <form className="create-user-form" onSubmit={handleValidation}>
-      <h1 className="create-user-form__heading" >Create account</h1>
+        <h1 className="create-user-form__heading">Create account</h1>
         <p className="create-user-form__subheading">First Name:</p>
         <input
           type="text"
@@ -100,11 +98,23 @@ export const CreateUserForm = ({
           className="create-user-form__input"
         />
         {/* <button type="submit">Submit</button> */}
-        <Button label="Submit" size="small" color="primary"/>
+        <Button label="Submit" size="small" color="primary" />
       </form>
-      {incompletedData && <p className="create-user-form__error">Please fill in all data fields.</p>}
-      {emailInUse && <p className="create-user-form__error">This email already has an account created.</p>}
-      {invalidEmail && <p className="create-user-form__error">This is not a valid email address.</p>}
+      {incompletedData && (
+        <p className="create-user-form__error">
+          Please fill in all data fields.
+        </p>
+      )}
+      {emailInUse && (
+        <p className="create-user-form__error">
+          This email already has an account created.
+        </p>
+      )}
+      {invalidEmail && (
+        <p className="create-user-form__error">
+          This is not a valid email address.
+        </p>
+      )}
     </div>
   );
 };

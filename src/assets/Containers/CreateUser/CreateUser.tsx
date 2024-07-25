@@ -1,4 +1,4 @@
-import './CreateUser.scss';
+import "./CreateUser.scss";
 import { Users } from "../../DataTypes/DataTypes";
 import CreateUserForm from "../../Components/CreateUserForm/CreateUserForm";
 import Header from "../../Components/Header/Header";
@@ -6,10 +6,9 @@ import { Link } from "react-router-dom";
 
 type CreateUserProps = {
   brandName: string;
-}
+};
 
-const CreateUser = ({brandName}: CreateUserProps) => {
-
+const CreateUser = ({ brandName }: CreateUserProps) => {
   const handleSubmit = async (user: Users) => {
     await fetch("http://localhost:8080/createuser", {
       method: "POST",
@@ -28,9 +27,11 @@ const CreateUser = ({brandName}: CreateUserProps) => {
 
   return (
     <div className="create-user">
-      <Header brandName={brandName}/>
-      <Link to="/frontend-spendingtracker/"><p className="create-user__back">back</p></Link>
-      
+      <Header brandName={brandName} />
+      <Link to="/">
+        <p className="create-user__back">back</p>
+      </Link>
+
       <CreateUserForm
         handleSubmit={handleSubmit}
         defaultCreateUserFormState={defaultCreateUserFormState}
