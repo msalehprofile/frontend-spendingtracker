@@ -23,7 +23,7 @@ const LogInPage = ({
   return (
     <div className="login-page">
       <Header brandName={brandName} />
-      <Link to="/frontend-spendingtracker/">
+      <Link to="/">
         <p className="login-page__back">back</p>
       </Link>
       <LogInForm

@@ -28,7 +28,7 @@ const CreateUser = ({ brandName }: CreateUserProps) => {
   return (
     <div className="create-user">
       <Header brandName={brandName} />
-      <Link to="/frontend-spendingtracker/">
+      <Link to="/">
         <p className="create-user__back">back</p>
       </Link>
 

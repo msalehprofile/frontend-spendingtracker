@@ -316,7 +316,7 @@ const MainApp = () => {
     <>
       <Routes>
         <Route
-          path="/frontend-spendingtracker/"
+          path="/"
           element={<Welcome brandName={brandName} />}
         />
         <Route
