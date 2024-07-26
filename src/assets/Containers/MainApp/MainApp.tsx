@@ -102,7 +102,7 @@ const MainApp = () => {
     handleGetUserBugdets(userId);
     calculateSpendPerformance();
     setSpendsByCat();
-    navigate("/dashboard");
+    navigate("/frontend-spendingtracker/dashboard");
   };
 
   const handleSignOut = () => {
@@ -144,7 +144,7 @@ const MainApp = () => {
         setUserId(foundUser.id);
         setUserLoggedIn(true);
         setIncorrectPassword(false);
-        navigate("/dashboard");
+        navigate("/frontend-spendingtracker/dashboard");
       } else {
         setIncorrectPassword(true);
       }
@@ -316,15 +316,15 @@ const MainApp = () => {
     <>
       <Routes>
         <Route
-          path="/"
+          path="/frontend-spendingtracker/"
           element={<Welcome brandName={brandName} />}
         />
         <Route
-          path="/createuser"
+          path="/frontend-spendingtracker/createuser"
           element={<CreateUser brandName={brandName} />}
         />
         <Route
-          path="/login"
+          path="/frontend-spendingtracker/login"
           element={
             <LogInPage
               brandName={brandName}
@@ -336,7 +336,7 @@ const MainApp = () => {
         {userLoggedIn ? (
           <>
             <Route
-              path="/dashboard"
+              path="/frontend-spendingtracker/dashboard"
               element={
                 <Trends
                   userFirstName={userFirstName}
@@ -361,7 +361,7 @@ const MainApp = () => {
               }
             />
             <Route
-              path="/uploadspend"
+              path="/frontend-spendingtracker/uploadspend"
               element={
                 <UploadSpendPage
                   defaultSpend={defaultSpend}
@@ -372,7 +372,7 @@ const MainApp = () => {
               }
             />
             <Route
-              path="/myprofile"
+              path="/frontend-spendingtracker/myprofile"
               element={
                 <UserProfile
                   userFirstName={userFirstName}
@@ -384,7 +384,7 @@ const MainApp = () => {
               }
             />
             <Route
-              path="/budgets"
+              path="/frontend-spendingtracker/budgets"
               element={
                 <ShowBudgetPage
                   brandName={brandName}
@@ -407,7 +407,7 @@ const MainApp = () => {
               }
             />
             <Route
-              path="/setsbudgets"
+              path="/frontend-spendingtracker/setsbudgets"
               element={
                 <SetsBudgetsPage
                   brandName={brandName}
@@ -422,7 +422,7 @@ const MainApp = () => {
           </>
         ) : (
           <Route
-            path="/*"
+            path="/frontend-spendingtracker/*"
             element={<Navigate to="/frontend-spendingtracker/" />}
           />
         )}

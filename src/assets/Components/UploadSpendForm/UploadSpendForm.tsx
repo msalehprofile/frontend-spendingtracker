@@ -39,7 +39,6 @@ const UploadSpendForm = ({
           onInput={(event) => handleInput(event, "vendor")}
         />
         <p className="submit-spend-form__subheading">Category:</p>
-        {/* <input type="text" placeholder="Category" className="submit-spend-form__input" onInput={(event) => handleInput(event, "category")}/> */}
         <select className="submit-spend-form__input" onChange={(event) => handleSelect(event, "category")}>
           <option value="select">Select</option>
           <option value="bills">Bills</option>

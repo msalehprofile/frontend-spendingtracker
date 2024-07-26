@@ -57,7 +57,7 @@ const SetsBudgetsPage = ({ brandName, userId, userBudget, handleGetUserBugdets, 
     handleGetUserBugdets(userId)
     calculateSpendPerformance()
     confirmVarToBudget()
-    navigate("/budgets")
+    navigate("/frontend-spendingtracker/budgets")
   };
 
   return (

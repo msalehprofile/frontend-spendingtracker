@@ -54,7 +54,7 @@ export const CreateUserForm = ({
       setIncompletedDate(false);
       setEmailInUse(false);
       setInvalidEmail(false);
-      navigate("/");
+      navigate("/frontend-spendingtracker/");
     }
   };
 
@@ -97,7 +97,7 @@ export const CreateUserForm = ({
           onInput={(event) => handleInput(event, "password")}
           className="create-user-form__input"
         />
-        {/* <button type="submit">Submit</button> */}
+
         <Button label="Submit" size="small" color="primary" />
       </form>
       {incompletedData && (

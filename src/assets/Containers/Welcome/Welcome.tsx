@@ -11,8 +11,8 @@ const Welcome = ({brandName}: WelcomeProps) => {
     <div className="welcomePage">
         <h2 className="welcomePage__name">{brandName}</h2>
         <div className="welcomePage__buttons">
-            <Link to="/login"><Button label="Log in" color="primary" size="large"/></Link>
-            <Link to="/createuser"><Button label="Sign Up" color="secondary" size="large"/></Link>            
+            <Link to="/frontend-spendingtracker/login"><Button label="Log in" color="primary" size="large"/></Link>
+            <Link to="/frontend-spendingtracker/createuser"><Button label="Sign Up" color="secondary" size="large"/></Link>            
         </div>
     </div>
   )

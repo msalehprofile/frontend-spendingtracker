@@ -65,7 +65,6 @@ const LogInForm = ({ defaultLogInDetails, handleSubmitLogIn, incorrectPassword }
           onInput={(event) => handleInput(event, "password")}
           className="login-form__input"
         />
-        {/* <button type="submit">Log In</button> */}
         <Button label="Log in" size="small" color="primary"/>
         {checksAllInputs && <p className="login-form__error">Please complete all inputs</p>}
         {!emailInUse && <p className="login-form__error">Cannot find accound with his email address</p>}
