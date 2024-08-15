@@ -67,7 +67,7 @@ const MainApp = () => {
   const handleSubmitLogIn = async (userLogin: UserLogin) => {
     setUserPasswordEntered(userLogin.password);
     const resp = await fetch(
-      `http://localhost:8080/findUserByEmail/${userLogin.email}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/findUserByEmail/${userLogin.email}`
     );
     const data = await resp.json();
     setFoundUser(data);
@@ -75,7 +75,7 @@ const MainApp = () => {
 
   const handleGetThisMonthsMoneySpent = async (userId: number) => {
     const resp = await fetch(
-      `http://localhost:8080/calculateCurrentMonthSpends/${userId}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/calculateCurrentMonthSpends/${userId}`
     );
     const data = await resp.json();
     setAmountSpentInCurrentMonth(data);
@@ -83,18 +83,21 @@ const MainApp = () => {
 
   const handleGetLastMonthsMoneySpent = async (userId: number) => {
     const resp = await fetch(
-      `http://localhost:8080/calculateLastMonthSpends/${userId}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/calculateLastMonthSpends/${userId}`
     );
     const data = await resp.json();
     setAmountSpentLastMonthLFL(data);
   };
 
   const handleSubmitSpend = async (spendToSubmit: SubmittedSpends) => {
-    await fetch("http://localhost:8080/addspend", {
-      method: "POST",
-      headers: { admin: "true", "Content-Type": "application/json" },
-      body: JSON.stringify(spendToSubmit),
-    });
+    await fetch(
+      "https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/addspend",
+      {
+        method: "POST",
+        headers: { admin: "true", "Content-Type": "application/json" },
+        body: JSON.stringify(spendToSubmit),
+      }
+    );
     handleGetUserSpends(userId);
     handleGetUserCurrentMonthSpends(userId);
     handleGetThisMonthsMoneySpent(userId);
@@ -160,7 +163,7 @@ const MainApp = () => {
 
   const handleGetUserSpends = async (userId: number) => {
     const resp = await fetch(
-      `http://localhost:8080/findSpendsByUserId/${userId}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/findSpendsByUserId/${userId}`
     );
     const data = await resp.json();
     setListOfUsersAllTimeSpends(data);
@@ -168,7 +171,7 @@ const MainApp = () => {
 
   const handleGetUserBugdets = async (userId: number) => {
     const resp = await fetch(
-      `http://localhost:8080/findBudgetsByUserId/${userId}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/findBudgetsByUserId/${userId}`
     );
     const data = await resp.json();
     setUserBudget(data);
@@ -176,7 +179,7 @@ const MainApp = () => {
 
   const handleGetUserCurrentMonthSpends = async (userId: number) => {
     const resp = await fetch(
-      `http://localhost:8080/findSpendsForCurrentMonth/${userId}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/findSpendsForCurrentMonth/${userId}`
     );
     const data = await resp.json();
     setUsersCurrentMonthSpends(data);
@@ -311,6 +314,10 @@ const MainApp = () => {
       confirmVarToBudget();
     }
   }, [userId, variance, userBudget]);
+
+  useEffect(() => {
+      setSpendsByCat();
+  }, [amountSpentInCurrentMonth]);
 
   return (
     <>

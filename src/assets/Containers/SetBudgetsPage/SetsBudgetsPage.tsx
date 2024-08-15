@@ -1,4 +1,3 @@
-
 import "./SetsBudgetsPage.scss";
 import DashboardNav from "../../Components/DashboardNav/DashboardNav";
 import Header from "../../Components/Header/Header";
@@ -11,11 +10,18 @@ type SetsBudgetsPageProps = {
   userId: number;
   userBudget: UserBudget | undefined;
   handleGetUserBugdets: (userId: number) => void;
-  calculateSpendPerformance: () =>void;
-  confirmVarToBudget: () =>void;
+  calculateSpendPerformance: () => void;
+  confirmVarToBudget: () => void;
 };
 
-const SetsBudgetsPage = ({ brandName, userId, userBudget, handleGetUserBugdets, calculateSpendPerformance, confirmVarToBudget }: SetsBudgetsPageProps) => {
+const SetsBudgetsPage = ({
+  brandName,
+  userId,
+  userBudget,
+  handleGetUserBugdets,
+  calculateSpendPerformance,
+  confirmVarToBudget,
+}: SetsBudgetsPageProps) => {
   const navigate = useNavigate();
 
   let defaultBudgets = {
@@ -29,46 +35,49 @@ const SetsBudgetsPage = ({ brandName, userId, userBudget, handleGetUserBugdets, 
     shopping: 0,
     groceries: 0,
     health: 0,
-    transport: 0
-  }
-
-  if(userBudget != undefined) {
-  defaultBudgets = {
-    id: userBudget.id,
-    userId: userId,
-    monthlyIncome: userBudget.monthlyIncome,
-    bills: userBudget.bills,
-    eatingOut: userBudget.eatingOut,
-    entertainment: userBudget.entertainment,
-    gifts: userBudget.gifts,
-    shopping: userBudget.shopping,
-    groceries: userBudget.groceries,
-    health: userBudget.health,
-    transport: userBudget.transport
-  }
+    transport: 0,
   };
 
+  if (userBudget != undefined) {
+    defaultBudgets = {
+      id: userBudget.id,
+      userId: userId,
+      monthlyIncome: userBudget.monthlyIncome,
+      bills: userBudget.bills,
+      eatingOut: userBudget.eatingOut,
+      entertainment: userBudget.entertainment,
+      gifts: userBudget.gifts,
+      shopping: userBudget.shopping,
+      groceries: userBudget.groceries,
+      health: userBudget.health,
+      transport: userBudget.transport,
+    };
+  }
+
   const handleSubmitBudget = async (userBudgetsToSet: UserBudget) => {
-    await fetch("http://localhost:8080/createbudget", {
-      method: "POST",
-      headers: { admin: "true", "Content-Type": "application/json" },
-      body: JSON.stringify(userBudgetsToSet),
-    });
-    handleGetUserBugdets(userId)
-    calculateSpendPerformance()
-    confirmVarToBudget()
-    navigate("/frontend-spendingtracker/budgets")
+    await fetch(
+      "https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/createbudget",
+      {
+        method: "POST",
+        headers: { admin: "true", "Content-Type": "application/json" },
+        body: JSON.stringify(userBudgetsToSet),
+      }
+    );
+    handleGetUserBugdets(userId);
+    calculateSpendPerformance();
+    confirmVarToBudget();
+    navigate("/frontend-spendingtracker/budgets");
   };
 
   return (
     <>
       <Header brandName={brandName} />
       <div className="set-budget-page">
-      <SetsBudgetsForm
-        defaultBudgets={defaultBudgets}
-        handleSubmitBudget={handleSubmitBudget}
-        userBudget={userBudget}
-      />
+        <SetsBudgetsForm
+          defaultBudgets={defaultBudgets}
+          handleSubmitBudget={handleSubmitBudget}
+          userBudget={userBudget}
+        />
       </div>
       <DashboardNav />
     </>

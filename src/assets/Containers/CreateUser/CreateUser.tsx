@@ -10,11 +10,14 @@ type CreateUserProps = {
 
 const CreateUser = ({ brandName }: CreateUserProps) => {
   const handleSubmit = async (user: Users) => {
-    await fetch("http://localhost:8080/createuser", {
-      method: "POST",
-      headers: { admin: "true", "Content-Type": "application/json" },
-      body: JSON.stringify(user),
-    });
+    await fetch(
+      "https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/createuser",
+      {
+        method: "POST",
+        headers: { admin: "true", "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+      }
+    );
   };
 
   const defaultCreateUserFormState = {

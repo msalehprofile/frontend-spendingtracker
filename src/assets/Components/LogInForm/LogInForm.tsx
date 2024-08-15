@@ -1,7 +1,7 @@
-import './LogInForm.scss';
+import "./LogInForm.scss";
 import { FormEvent, useState } from "react";
 import { UserLogin } from "../../DataTypes/DataTypes";
-import Button from '../Button/Button';
+import Button from "../Button/Button";
 
 type LogInProps = {
   defaultLogInDetails: UserLogin;
@@ -9,39 +9,42 @@ type LogInProps = {
   incorrectPassword: boolean;
 };
 
-const LogInForm = ({ defaultLogInDetails, handleSubmitLogIn, incorrectPassword }: LogInProps) => {
+const LogInForm = ({
+  defaultLogInDetails,
+  handleSubmitLogIn,
+  incorrectPassword,
+}: LogInProps) => {
   const [user, setUser] = useState<UserLogin>(defaultLogInDetails);
   const [emailInUse, setEmailInUse] = useState<boolean>(true);
   const [checksAllInputs, setChecksAllInputs] = useState<boolean>(false);
 
   const checkValidEmail = async () => {
     const response = await fetch(
-      `http://localhost:8080/checkuserexists/${user.email}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/checkuserexists/${user.email}`
     );
     const existingEmail = await response.json();
-    handletest(existingEmail)
+    handletest(existingEmail);
   };
 
   const handleValidation = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (user.email != "" || user.password != "") {
-        checkValidEmail();
-    } 
-    
+      checkValidEmail();
+    }
+
     if (user.email == "" || user.password == "") {
-        setChecksAllInputs(true);
+      setChecksAllInputs(true);
     }
   };
 
   const handletest = (existingEmail: boolean) => {
-
     if (existingEmail && user.password) {
-      handleSubmitLogIn(user)
+      handleSubmitLogIn(user);
     } else {
-        setEmailInUse(false)
+      setEmailInUse(false);
     }
-  }
+  };
 
   const handleInput = (event: FormEvent<HTMLInputElement>, key: string) => {
     setUser({ ...user, [key]: event.currentTarget.value });
@@ -49,8 +52,8 @@ const LogInForm = ({ defaultLogInDetails, handleSubmitLogIn, incorrectPassword }
 
   return (
     <>
-      <form  className="login-form" onSubmit={handleValidation}>
-        <h1 className="login-form__heading" >Log in</h1>
+      <form className="login-form" onSubmit={handleValidation}>
+        <h1 className="login-form__heading">Log in</h1>
         <p className="login-form__subheading">Email:</p>
         <input
           type="text"
@@ -65,10 +68,20 @@ const LogInForm = ({ defaultLogInDetails, handleSubmitLogIn, incorrectPassword }
           onInput={(event) => handleInput(event, "password")}
           className="login-form__input"
         />
-        <Button label="Log in" size="small" color="primary"/>
-        {checksAllInputs && <p className="login-form__error">Please complete all inputs</p>}
-        {!emailInUse && <p className="login-form__error">Cannot find accound with his email address</p>}
-        {incorrectPassword && <p className="login-form__error">Sorry, that is not the correct password.</p>}
+        <Button label="Log in" size="small" color="primary" />
+        {checksAllInputs && (
+          <p className="login-form__error">Please complete all inputs</p>
+        )}
+        {!emailInUse && (
+          <p className="login-form__error">
+            Cannot find accound with his email address
+          </p>
+        )}
+        {incorrectPassword && (
+          <p className="login-form__error">
+            Sorry, that is not the correct password.
+          </p>
+        )}
       </form>
     </>
   );

@@ -21,7 +21,7 @@ export const CreateUserForm = ({
 
   const getExistingEmail = async () => {
     const response = await fetch(
-      `http://localhost:8080/checkuserexists/${user.email}`
+      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/checkuserexists/${user.email}`
     );
     const existingEmail = await response.json();
     setEmailInUse(existingEmail);
