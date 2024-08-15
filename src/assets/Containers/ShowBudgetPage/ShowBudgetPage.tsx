@@ -129,7 +129,7 @@ const ShowSpentPage = ({
             />
           ))}
         </Carousel>
-        <Link to="/setsbudgets">
+        <Link to="/frontend-spendingtracker/setsbudgets">
           <Button label="Update budgets" color="primary" size="medium" />
         </Link>
       </div>
