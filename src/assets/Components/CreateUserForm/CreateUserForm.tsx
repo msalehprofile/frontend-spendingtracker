@@ -17,6 +17,7 @@ export const CreateUserForm = ({
   const [incompletedData, setIncompletedDate] = useState<boolean>(false);
   const [emailInUse, setEmailInUse] = useState<boolean>(false);
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
+  const [spacesEntered, setSpacesEntered] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const getExistingEmail = async () => {
@@ -25,6 +26,12 @@ export const CreateUserForm = ({
     );
     const existingEmail = await response.json();
     setEmailInUse(existingEmail);
+
+    if (!existingEmail) {
+      checkAbleToSubmit();
+    } else {
+      setEmailInUse(true);
+    }
   };
 
   const handleValidation = (event: FormEvent<HTMLFormElement>) => {
@@ -41,11 +48,14 @@ export const CreateUserForm = ({
       setInvalidEmail(true);
     }
 
-    if (user.email != "") {
+    if (user.password.includes(" ") || user.email.includes(" ") ) {
+      setSpacesEntered(true);
+    }
+
+    if (user.email != "" && !user.password.includes(" ") && !user.email.includes(" ") && user.email.includes("@")) {
       getExistingEmail();
     }
 
-    checkAbleToSubmit();
   };
 
   const checkAbleToSubmit = () => {
@@ -56,6 +66,7 @@ export const CreateUserForm = ({
       setInvalidEmail(false);
       navigate("/frontend-spendingtracker/");
     }
+    setEmailInUse(true);
   };
 
   const handleInput = (event: FormEvent<HTMLInputElement>, key: string) =>
@@ -113,6 +124,12 @@ export const CreateUserForm = ({
       {invalidEmail && (
         <p className="create-user-form__error">
           This is not a valid email address.
+        </p>
+      )}
+
+      {spacesEntered && (
+        <p className="create-user-form__error">
+          No spaces allowed in user details.
         </p>
       )}
     </div>

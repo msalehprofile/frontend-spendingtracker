@@ -133,6 +133,7 @@ const MainApp = () => {
     setUserGroceriesSpent("");
     setUserHealthSpent("");
     setUserTransportSpent("");
+    setUserBudget(undefined);
     setNoBudget(true);
     setOverBudget(false);
     setUnderBudget(false);
