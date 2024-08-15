@@ -63,7 +63,7 @@ const LogInForm = ({
         />
         <p className="login-form__subheading">Password:</p>
         <input
-          type="text"
+          type="password"
           placeholder="password"
           onInput={(event) => handleInput(event, "password")}
           className="login-form__input"
