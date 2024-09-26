@@ -74,11 +74,15 @@ const MainApp = () => {
   };
 
   const handleGetThisMonthsMoneySpent = async (userId: number) => {
-    const resp = await fetch(
-      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/calculateCurrentMonthSpends/${userId}`
-    );
-    const data = await resp.json();
-    setAmountSpentInCurrentMonth(data);
+    try {
+      const resp = await fetch(
+        `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/calculateCurrentMonthSpends/${userId}`
+      );
+      const data = await resp.json();
+      setAmountSpentInCurrentMonth(data);
+    } catch (error) {
+      setAmountSpentInCurrentMonth(0);
+    }
   };
 
   const handleGetLastMonthsMoneySpent = async (userId: number) => {
@@ -171,11 +175,16 @@ const MainApp = () => {
   };
 
   const handleGetUserBugdets = async (userId: number) => {
-    const resp = await fetch(
-      `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/findBudgetsByUserId/${userId}`
-    );
-    const data = await resp.json();
-    setUserBudget(data);
+    try {
+      const resp = await fetch(
+        `https://54tav47oc4.execute-api.us-east-1.amazonaws.com/Prod/findBudgetsByUserId/${userId}`
+      );
+      const data = await resp.json();
+      setUserBudget(data);
+    } catch (error) {
+      setUserBudget(undefined);
+    }
+   
   };
 
   const handleGetUserCurrentMonthSpends = async (userId: number) => {
